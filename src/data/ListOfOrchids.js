@@ -25,7 +25,7 @@ export const orchids = [
     category: "Vanda",
   },
   {
-    id: "2",
+    id: "17",
     name: "Purple Paradise",
     rating: 4,
     isSpecial: false,
