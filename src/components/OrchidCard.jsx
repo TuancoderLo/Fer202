@@ -1,4 +1,6 @@
-const OrchidCard = ({ orchid, onShowDetail }) => {
+import { Link } from "react-router-dom";
+
+const OrchidCard = ({ orchid }) => {
   return (
     <div className="orchid-card">
       <img src={orchid.image} alt={orchid.name} />
@@ -28,9 +30,9 @@ const OrchidCard = ({ orchid, onShowDetail }) => {
             <span className="natural-badge">🌿 Tự nhiên</span>
           )}
         </div>
-        <button className="detail-btn" onClick={() => onShowDetail(orchid)}>
+        <Link to={`/orchid/${orchid.id}`} className="detail-btn">
           Xem chi tiết
-        </button>
+        </Link>
       </div>
     </div>
   );
