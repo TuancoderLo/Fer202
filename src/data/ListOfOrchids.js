@@ -74,7 +74,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: false,
     image:
-      "https://www.allthingshair.com/_next/image/?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzqgvoczt%2Fproduction%2Fb79a6f3343003b8cc8d7295d5e8241f1b334e3fd-1200x800.jpg%3Fq%3D85%26fit%3Dclip%26auto%3Dformat&w=3840&q=75",
+      "https://static.vecteezy.com/system/resources/previews/044/149/630/non_2x/a-vibrant-bouquet-of-pink-and-purple-flowers-free-photo.jpg",
     clip: "https://www.youtube.com/embed/5wRWniH7rt8",
     color: "red",
     numberOfLike: 134,
