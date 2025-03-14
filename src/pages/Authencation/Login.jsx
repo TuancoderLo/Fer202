@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -148,6 +149,33 @@ const Login = () => {
     }
   };
 
+  // Xử lý đăng nhập bằng Google
+  const handleGoogleLogin = () => {
+    setLoading(true);
+
+    // Giả lập đăng nhập bằng Google (trong thực tế sẽ sử dụng Google OAuth API)
+    setTimeout(() => {
+      // Giả định đăng nhập thành công
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userName", "Người dùng Google");
+      localStorage.setItem("userRole", "user");
+      localStorage.setItem("userId", "google-user-123");
+
+      // Thông báo thay đổi trạng thái đăng nhập
+      window.dispatchEvent(new Event("login-status-change"));
+
+      // Chuyển hướng về trang chủ
+      navigate("/");
+
+      setLoading(false);
+    }, 1000);
+  };
+
+  // Hàm để bật/tắt hiển thị mật khẩu
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -183,13 +211,23 @@ const Login = () => {
               <div className="input-container">
                 <i className="fa fa-lock input-icon"></i>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Nhập mật khẩu của bạn"
                   required
                 />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                >
+                  <i
+                    className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                  ></i>
+                </button>
               </div>
             </div>
 
@@ -216,6 +254,22 @@ const Login = () => {
                 "Đăng Nhập"
               )}
             </button>
+
+            <div className="social-login">
+              <div className="social-login-divider">
+                <span>Hoặc đăng nhập với</span>
+              </div>
+
+              <button
+                type="button"
+                className="google-login-button"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+              >
+                <i className="fab fa-google"></i>
+                Google
+              </button>
+            </div>
           </form>
 
           <div className="login-footer">
