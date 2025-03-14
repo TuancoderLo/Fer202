@@ -6,6 +6,7 @@ export const orchids = [
     isSpecial: true,
     isNatural: false,
     image: "https://barritaorchids.com/cdn/shop/products/Cf592_1024x1024.jpg",
+    clip: "https://www.youtube.com/embed/5QXeJwQ0Sy4",
     color: "pink",
     numberOfLike: 192,
     origin: "Taiwan",
@@ -19,6 +20,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://cdn.pixabay.com/photo/2020/08/03/12/19/flower-5459972_1280.jpg",
+    clip: "https://www.youtube.com/embed/QVGwC-tywO4",
     color: "purple",
     numberOfLike: 156,
     origin: "Thailand",
@@ -32,6 +34,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://i.ex-cdn.com/vntravellive.com/files/editor3/2019/07/27/4906-5-canh-dong-hoa-dep-nhat-vuong-quoc-anh-074843.jpg",
+    clip: "https://www.youtube.com/embed/m17G-1clTaM",
     color: "purple",
     numberOfLike: 156,
     origin: "Thailand",
@@ -45,6 +48,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://phapluat.tuoitrethudo.vn/stores/news_dataimages/ledoantrung/022021/18/07/h4-620210218071431.0091500.jpg",
+    clip: "https://www.youtube.com/embed/AY5qcIq5u2g",
     color: "yellow",
     numberOfLike: 210,
     origin: "Brazil",
@@ -57,6 +61,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: true,
     image: "https://hoatuoihoamy.com/wp-content/uploads/2022/12/4.jpg",
+    clip: "https://www.youtube.com/embed/tMYQR8c29G4",
     color: "blue",
     numberOfLike: 178,
     origin: "Colombia",
@@ -70,6 +75,7 @@ export const orchids = [
     isNatural: false,
     image:
       "https://www.allthingshair.com/_next/image/?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzqgvoczt%2Fproduction%2Fb79a6f3343003b8cc8d7295d5e8241f1b334e3fd-1200x800.jpg%3Fq%3D85%26fit%3Dclip%26auto%3Dformat&w=3840&q=75",
+    clip: "https://www.youtube.com/embed/5wRWniH7rt8",
     color: "red",
     numberOfLike: 134,
     origin: "Vietnam",
@@ -83,6 +89,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://phapluat.tuoitrethudo.vn/stores/news_dataimages/ledoantrung/022021/18/07/h1-920210218071424.6856900.jpg",
+    clip: "https://www.youtube.com/embed/aSk-D86aOtc",
     color: "white",
     numberOfLike: 195,
     origin: "Japan",
@@ -95,6 +102,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: true,
     image: "https://greengarden.vn/wp-content/uploads/2023/12/hoa-hong2.jpg",
+    clip: "https://www.youtube.com/embed/KLuTLF3x9sA",
     color: "orange",
     numberOfLike: 165,
     origin: "France",
@@ -107,6 +115,7 @@ export const orchids = [
     isSpecial: true,
     isNatural: false,
     image: "https://hoathangtu.com/wp-content/uploads/2022/09/IMG_4766.jpg",
+    clip: "https://www.youtube.com/embed/RzVvThhjAKw",
     color: "pink",
     numberOfLike: 220,
     origin: "Italy",
@@ -120,6 +129,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://flowercorner.b-cdn.net/image/cache/catalog/products/Autumn_2024/NEWBOUQUET_093.jpg.webp",
+    clip: "https://www.youtube.com/embed/X_O-0fYQT8g",
     color: "red-orange",
     numberOfLike: 140,
     origin: "Netherlands",
@@ -132,6 +142,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: true,
     image: "https://shophoatigon.com/wp-content/uploads/2021/07/2.png",
+    clip: "https://www.youtube.com/embed/mMLVr19wYZw",
     color: "crimson",
     numberOfLike: 175,
     origin: "China",
@@ -145,6 +156,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://hoatuoiciti.com/upload/filemanager/images/275620225_3071738709755733_7832241443531568523_n.jpg",
+    clip: "https://www.youtube.com/embed/FxAgAyZYXJ8",
     color: "lavender",
     numberOfLike: 230,
     origin: "England",
@@ -157,6 +169,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: true,
     image: "https://happyflower.vn/app/uploads/2019/12/HoaBaby-1024x1024.jpg",
+    clip: "https://www.youtube.com/embed/5QXeJwQ0Sy4",
     color: "white",
     numberOfLike: 130,
     origin: "Mexico",
@@ -170,6 +183,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://kimkieuflower.vn/content/images/thumbs/000/0001542_y-nghia-so-luong-bong-hoa-huong-duong.jpeg",
+    clip: "https://www.youtube.com/embed/QVGwC-tywO4",
     color: "yellow",
     numberOfLike: 250,
     origin: "USA",
@@ -183,6 +197,7 @@ export const orchids = [
     isNatural: false,
     image:
       "https://happyflower.vn/app/uploads/2019/12/RoseMixBaby-1024x1024.jpg",
+    clip: "https://www.youtube.com/embed/m17G-1clTaM",
     color: "pink",
     numberOfLike: 180,
     origin: "Spain",
@@ -195,6 +210,7 @@ export const orchids = [
     isSpecial: false,
     isNatural: true,
     image: "https://litiflorist.com/upload/1614323573876.png",
+    clip: "https://www.youtube.com/embed/AY5qcIq5u2g",
     color: "peach",
     numberOfLike: 145,
     origin: "Korea",
@@ -208,6 +224,7 @@ export const orchids = [
     isNatural: true,
     image:
       "https://bazaarvietnam.vn/wp-content/uploads/2023/07/harper-bazaar-hoa-dep-nhat-the-gioi-sara-maximoff-unsplash-e1690296135666.jpg",
+    clip: "https://www.youtube.com/embed/tMYQR8c29G4",
     color: "violet",
     numberOfLike: 275,
     origin: "India",
