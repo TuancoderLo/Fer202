@@ -6,14 +6,16 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf5 100%);
+  background: url("https://img.lovepik.com/background/20211021/large/lovepik-romantic-sakura-background-image_401713636.jpg")
+    center center;
+  background-size: cover;
   font-family: "Poppins", sans-serif;
   padding: 20px;
   position: relative;
   overflow: hidden;
 }
 
-/* Thêm hiệu ứng hình nền */
+/* Thêm lớp overlay để làm sáng hình nền và tăng độ tương phản */
 .login-container::before {
   content: "";
   position: absolute;
@@ -21,38 +23,34 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("https://i.imgur.com/JqZXFbM.png") repeat;
-  opacity: 0.05;
+  background: rgba(255, 255, 255, 0.2);
   z-index: 0;
-  animation: backgroundMove 60s linear infinite;
 }
 
-@keyframes backgroundMove {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 1000px 1000px;
-  }
+/* Xóa hiệu ứng ngôi sao lấp lánh vì không phù hợp với nền hoa anh đào */
+.star {
+  display: none;
 }
 
 .login-card {
   position: relative;
   width: 100%;
   max-width: 450px;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.85);
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 192, 203, 0.2);
   overflow: hidden;
   padding: 40px;
   backdrop-filter: blur(10px);
   transform: translateY(0);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 2;
 }
 
 .login-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 192, 203, 0.3);
 }
 
 .login-flower-decoration {
@@ -125,21 +123,21 @@
   font-weight: 700;
   margin-bottom: 5px;
   text-align: center;
-  background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
+  background: linear-gradient(135deg, #ff7eb3 0%, #ff5c8d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .login-subtitle {
-  color: #888;
+  color: #555;
   font-size: 16px;
   margin-bottom: 30px;
   text-align: center;
 }
 
 .login-error {
-  background-color: #ffebee;
+  background-color: rgba(255, 235, 238, 0.9);
   color: #d32f2f;
   padding: 12px;
   border-radius: 12px;
@@ -175,7 +173,7 @@
 
 .form-group label {
   display: block;
-  color: #555;
+  color: #444;
   font-size: 14px;
   margin-bottom: 8px;
   font-weight: 500;
@@ -183,7 +181,7 @@
 }
 
 .form-group:focus-within label {
-  color: #f06292;
+  color: #ff5c8d;
 }
 
 .input-container {
@@ -196,29 +194,29 @@
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa;
+  color: #777;
   transition: color 0.3s;
 }
 
 .input-container:focus-within .input-icon {
-  color: #f06292;
+  color: #ff5c8d;
 }
 
 .input-container input {
   width: 100%;
   padding: 15px 15px 15px 45px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid rgba(224, 224, 224, 0.8);
   border-radius: 12px;
   font-size: 14px;
   transition: all 0.3s;
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .input-container input:focus {
-  border-color: #f8bbd0;
-  box-shadow: 0 0 0 4px rgba(248, 187, 208, 0.3);
+  border-color: #ffb6c1;
+  box-shadow: 0 0 0 4px rgba(255, 182, 193, 0.3);
   outline: none;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .form-options {
@@ -236,13 +234,13 @@
 
 .remember-me input {
   margin-right: 8px;
-  accent-color: #f06292;
+  accent-color: #ff5c8d;
   width: 16px;
   height: 16px;
 }
 
 .forgot-password {
-  color: #f06292;
+  color: #ff5c8d;
   text-decoration: none;
   transition: all 0.3s;
   position: relative;
@@ -255,12 +253,12 @@
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #f06292;
+  background-color: #ff5c8d;
   transition: width 0.3s;
 }
 
 .forgot-password:hover {
-  color: #ec407a;
+  color: #ff3377;
 }
 
 .forgot-password:hover::after {
@@ -270,7 +268,7 @@
 .login-button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #f8bbd0 0%, #f06292 100%);
+  background: linear-gradient(135deg, #ffb6c1 0%, #ff5c8d 100%);
   border: none;
   border-radius: 12px;
   color: white;
@@ -278,7 +276,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 92, 141, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -300,8 +298,8 @@
 }
 
 .login-button:hover {
-  background: linear-gradient(135deg, #f48fb1 0%, #ec407a 100%);
-  box-shadow: 0 6px 20px rgba(240, 98, 146, 0.4);
+  background: linear-gradient(135deg, #ffb6c1 0%, #ff3377 100%);
+  box-shadow: 0 6px 20px rgba(255, 92, 141, 0.4);
   transform: translateY(-2px);
 }
 
@@ -311,18 +309,23 @@
 
 .login-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 10px rgba(240, 98, 146, 0.3);
+  box-shadow: 0 2px 10px rgba(255, 92, 141, 0.3);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .login-footer {
   text-align: center;
-  color: #777;
+  color: #444;
   font-size: 14px;
   margin-top: 20px;
 }
 
 .login-footer a {
-  color: #f06292;
+  color: #ff5c8d;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s;
@@ -336,26 +339,26 @@
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #f06292;
+  background-color: #ff5c8d;
   transition: width 0.3s;
 }
 
 .login-footer a:hover {
-  color: #ec407a;
+  color: #ff3377;
 }
 
 .login-footer a:hover::after {
   width: 100%;
 }
 
-/* Hiệu ứng hoa rơi */
+/* Hiệu ứng hoa rơi - điều chỉnh để giống cánh hoa anh đào */
 @keyframes falling {
   0% {
     transform: translateY(-100%) rotate(0deg);
     opacity: 0;
   }
-  50% {
-    opacity: 0.7;
+  10% {
+    opacity: 1;
   }
   100% {
     transform: translateY(1000%) rotate(360deg);
@@ -367,10 +370,11 @@
   position: absolute;
   width: 15px;
   height: 15px;
-  background-color: #f8bbd0;
-  border-radius: 15px 0;
+  background-color: #ffb6c1;
+  border-radius: 50% 0 50% 50%;
   opacity: 0;
-  z-index: 0;
+  z-index: 1;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
 }
 
 /* Thêm các hoa rơi vào container */

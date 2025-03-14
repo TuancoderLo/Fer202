@@ -44,11 +44,63 @@ const Login = () => {
     };
   }, []);
 
+  // Tạo hiệu ứng ngôi sao lấp lánh
+  useEffect(() => {
+    const createStars = () => {
+      const container = document.querySelector(".login-container");
+      if (!container) return;
+
+      // Xóa các ngôi sao cũ nếu có
+      const oldStars = container.querySelectorAll(".star");
+      oldStars.forEach((star) => star.remove());
+
+      // Tạo ngôi sao mới
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+
+        // Thiết lập vị trí ngẫu nhiên
+        const leftPos = Math.random() * 100;
+        const topPos = Math.random() * 100;
+        star.style.left = `${leftPos}%`;
+        star.style.top = `${topPos}%`;
+
+        // Thiết lập kích thước ngẫu nhiên
+        const size = 1 + Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+
+        // Thiết lập animation
+        const duration = 1 + Math.random() * 3;
+        star.style.animation = `twinkle ${duration}s infinite ease-in-out ${
+          Math.random() * 3
+        }s`;
+
+        container.appendChild(star);
+      }
+    };
+
+    createStars();
+
+    // Cleanup
+    return () => {
+      const container = document.querySelector(".login-container");
+      if (container) {
+        const stars = container.querySelectorAll(".star");
+        stars.forEach((star) => star.remove());
+      }
+    };
+  }, []);
+
   // Tạo hiệu ứng hoa rơi
   useEffect(() => {
     const createFlowerPetals = () => {
       const container = document.querySelector(".login-container");
       if (!container) return;
+
+      // Xóa các cánh hoa cũ nếu có
+      const oldPetals = container.querySelectorAll(".flower-petal");
+      oldPetals.forEach((petal) => petal.remove());
 
       for (let i = 0; i < 15; i++) {
         const petal = document.createElement("div");
