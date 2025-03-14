@@ -15,11 +15,19 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userId");
+    // Đầu tiên chuyển hướng đến trang đăng nhập
     navigate("/login");
+
+    // Sau đó mới xóa thông tin đăng nhập
+    setTimeout(() => {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userId");
+
+      // Thông báo thay đổi trạng thái đăng nhập
+      window.dispatchEvent(new Event("login-status-change"));
+    }, 100);
   };
 
   return (

@@ -33,6 +33,10 @@ body {
   flex-direction: column;
 }
 
+.main-content.with-navbar {
+  padding-top: 10px;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -590,4 +594,17 @@ body {
 .contact-page {
   padding: 2rem;
   min-height: calc(100vh - 64px);
+}
+
+/* Thêm CSS cho trang đăng nhập */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Thêm CSS cho trang admin */
+.admin-page {
+  min-height: 100vh;
 }

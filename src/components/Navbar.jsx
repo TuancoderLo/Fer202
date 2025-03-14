@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -31,16 +31,47 @@ import NatureIcon from "@mui/icons-material/Nature";
 import StarIcon from "@mui/icons-material/Star";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CloseIcon from "@mui/icons-material/Close";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = ({ toggleTheme, mode }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const userName = localStorage.getItem("userName") || "Người dùng";
+  const userRole = localStorage.getItem("userRole");
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
+  };
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    // Đầu tiên chuyển hướng đến trang đăng nhập
+    navigate("/login");
+
+    // Sau đó mới xóa thông tin đăng nhập
+    setTimeout(() => {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userId");
+
+      // Thông báo thay đổi trạng thái đăng nhập
+      window.dispatchEvent(new Event("login-status-change"));
+    }, 100);
   };
 
   const isActive = (path) => {
@@ -106,6 +137,20 @@ const Navbar = ({ toggleTheme, mode }) => {
             />
           </ListItem>
         ))}
+        <ListItem button onClick={toggleTheme}>
+          <ListItemIcon>
+            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </ListItemIcon>
+          <ListItemText
+            primary={mode === "dark" ? "Chế độ sáng" : "Chế độ tối"}
+          />
+        </ListItem>
+        <ListItem button onClick={handleLogout}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Đăng xuất" />
+        </ListItem>
       </List>
       <Divider />
       <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
@@ -215,6 +260,50 @@ const Navbar = ({ toggleTheme, mode }) => {
                   {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
                 </IconButton>
               </Tooltip>
+
+              <Box sx={{ ml: 2 }}>
+                <Tooltip title="Tùy chọn người dùng">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={userName} src="/static/images/avatar/1.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem>
+                    <Typography textAlign="center">
+                      Xin chào, {userName}
+                    </Typography>
+                  </MenuItem>
+                  {userRole === "admin" && (
+                    <MenuItem onClick={() => navigate("/admin")}>
+                      <ListItemIcon>
+                        <AccountCircleIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography textAlign="center">Trang quản trị</Typography>
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                      <LogoutIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography textAlign="center">Đăng xuất</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
             </Box>
           )}
         </Toolbar>

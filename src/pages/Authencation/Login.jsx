@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { authenticateUser } from "../../data/dataUser";
 import "./Login.css";
 
@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Kiểm tra nếu người dùng đã đăng nhập thì chuyển hướng
   useEffect(() => {
@@ -21,7 +22,26 @@ const Login = () => {
         navigate("/");
       }
     }
-  }, [navigate]);
+  }, [navigate, location]);
+
+  // Thêm event listener để xử lý khi trạng thái đăng nhập thay đổi
+  useEffect(() => {
+    const handleLoginStatusChange = () => {
+      // Đặt lại form khi có sự kiện đăng xuất
+      setEmail("");
+      setPassword("");
+      setError("");
+    };
+
+    window.addEventListener("login-status-change", handleLoginStatusChange);
+
+    return () => {
+      window.removeEventListener(
+        "login-status-change",
+        handleLoginStatusChange
+      );
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +55,9 @@ const Login = () => {
       localStorage.setItem("userName", result.user.name);
       localStorage.setItem("userRole", result.user.role);
       localStorage.setItem("userId", result.user.id);
+
+      // Thông báo thay đổi trạng thái đăng nhập
+      window.dispatchEvent(new Event("login-status-change"));
 
       // Chuyển hướng dựa trên role
       if (result.user.role === "admin") {

@@ -37,8 +37,19 @@ function App() {
     // Lắng nghe sự thay đổi trong localStorage
     window.addEventListener("storage", checkLoginStatus);
 
+    // Thêm event listener để cập nhật state khi có thay đổi đăng nhập
+    const handleLoginStatusChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener("login-status-change", handleLoginStatusChange);
+
     return () => {
       window.removeEventListener("storage", checkLoginStatus);
+      window.removeEventListener(
+        "login-status-change",
+        handleLoginStatusChange
+      );
     };
   }, []);
 
@@ -56,10 +67,22 @@ function App() {
       <BrowserRouter>
         <div className="app">
           {isLoggedIn && <Navbar toggleTheme={toggleTheme} mode={mode} />}
-          <main className="main-content">
+          <main className={`main-content ${isLoggedIn ? "with-navbar" : ""}`}>
             <Routes>
               {/* Route công khai */}
-              <Route path="/login" element={<Login />} />
+              <Route
+                path="/login"
+                element={
+                  isLoggedIn ? (
+                    <Navigate
+                      to={userRole === "admin" ? "/admin" : "/"}
+                      replace
+                    />
+                  ) : (
+                    <Login />
+                  )
+                }
+              />
 
               {/* Route cho admin */}
               <Route
