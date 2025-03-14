@@ -194,7 +194,6 @@ const Login = () => {
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <div className="input-container">
-                <i className="fa fa-envelope input-icon"></i>
                 <input
                   type="email"
                   id="email"
@@ -209,7 +208,6 @@ const Login = () => {
             <div className="form-group">
               <label htmlFor="password">Mật khẩu</label>
               <div className="input-container">
-                <i className="fa fa-lock input-icon"></i>
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
