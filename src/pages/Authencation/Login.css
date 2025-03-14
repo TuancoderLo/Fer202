@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url("https://img.lovepik.com/background/20211021/large/lovepik-romantic-sakura-background-image_401713636.jpg")
+  background: url("https://cdn.pixabay.com/photo/2016/02/27/06/43/cherry-blossom-tree-1225186_1280.jpg")
     center center;
   background-size: cover;
   font-family: "Poppins", sans-serif;
@@ -23,7 +23,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   z-index: 0;
 }
 
@@ -71,7 +71,7 @@
 .top-left {
   top: -30px;
   left: -30px;
-  background-image: url("https://i.imgur.com/JqZXFbM.png");
+  background-image: url("https://cdn.pixabay.com/photo/2016/03/31/19/26/cherry-blossom-1295009_1280.png");
   transform: rotate(-15deg);
   animation: float 6s ease-in-out infinite;
 }
@@ -79,24 +79,24 @@
 .top-right {
   top: -20px;
   right: -20px;
-  background-image: url("https://i.imgur.com/8KCT1k5.png");
-  transform: rotate(15deg);
+  background-image: url("https://cdn.pixabay.com/photo/2016/03/31/19/26/cherry-blossom-1295009_1280.png");
+  transform: rotate(15deg) scale(0.8);
   animation: float 7s ease-in-out infinite;
 }
 
 .bottom-left {
   bottom: -30px;
   left: -30px;
-  background-image: url("https://i.imgur.com/pDGUJJZ.png");
-  transform: rotate(-30deg);
+  background-image: url("https://cdn.pixabay.com/photo/2016/03/31/19/26/cherry-blossom-1295009_1280.png");
+  transform: rotate(-30deg) scale(0.7);
   animation: float 8s ease-in-out infinite;
 }
 
 .bottom-right {
   bottom: -20px;
   right: -20px;
-  background-image: url("https://i.imgur.com/JqZXFbM.png");
-  transform: rotate(30deg) scale(0.8);
+  background-image: url("https://cdn.pixabay.com/photo/2016/03/31/19/26/cherry-blossom-1295009_1280.png");
+  transform: rotate(30deg) scale(0.6);
   animation: float 5s ease-in-out infinite;
 }
 

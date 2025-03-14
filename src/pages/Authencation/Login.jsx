@@ -44,57 +44,9 @@ const Login = () => {
     };
   }, []);
 
-  // Tạo hiệu ứng ngôi sao lấp lánh
+  // Tạo hiệu ứng cánh hoa anh đào rơi
   useEffect(() => {
-    const createStars = () => {
-      const container = document.querySelector(".login-container");
-      if (!container) return;
-
-      // Xóa các ngôi sao cũ nếu có
-      const oldStars = container.querySelectorAll(".star");
-      oldStars.forEach((star) => star.remove());
-
-      // Tạo ngôi sao mới
-      for (let i = 0; i < 50; i++) {
-        const star = document.createElement("div");
-        star.classList.add("star");
-
-        // Thiết lập vị trí ngẫu nhiên
-        const leftPos = Math.random() * 100;
-        const topPos = Math.random() * 100;
-        star.style.left = `${leftPos}%`;
-        star.style.top = `${topPos}%`;
-
-        // Thiết lập kích thước ngẫu nhiên
-        const size = 1 + Math.random() * 3;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-
-        // Thiết lập animation
-        const duration = 1 + Math.random() * 3;
-        star.style.animation = `twinkle ${duration}s infinite ease-in-out ${
-          Math.random() * 3
-        }s`;
-
-        container.appendChild(star);
-      }
-    };
-
-    createStars();
-
-    // Cleanup
-    return () => {
-      const container = document.querySelector(".login-container");
-      if (container) {
-        const stars = container.querySelectorAll(".star");
-        stars.forEach((star) => star.remove());
-      }
-    };
-  }, []);
-
-  // Tạo hiệu ứng hoa rơi
-  useEffect(() => {
-    const createFlowerPetals = () => {
+    const createSakuraPetals = () => {
       const container = document.querySelector(".login-container");
       if (!container) return;
 
@@ -102,7 +54,8 @@ const Login = () => {
       const oldPetals = container.querySelectorAll(".flower-petal");
       oldPetals.forEach((petal) => petal.remove());
 
-      for (let i = 0; i < 15; i++) {
+      // Tạo nhiều cánh hoa anh đào
+      for (let i = 0; i < 30; i++) {
         const petal = document.createElement("div");
         petal.classList.add("flower-petal");
 
@@ -111,17 +64,32 @@ const Login = () => {
         petal.style.left = `${leftPos}%`;
 
         // Thiết lập kích thước ngẫu nhiên
-        const size = 10 + Math.random() * 15;
+        const size = 8 + Math.random() * 12;
         petal.style.width = `${size}px`;
         petal.style.height = `${size}px`;
 
-        // Thiết lập màu ngẫu nhiên
-        const colors = ["#f8bbd0", "#f48fb1", "#f06292", "#ec407a"];
+        // Thiết lập màu ngẫu nhiên cho cánh hoa anh đào
+        const colors = ["#ffb6c1", "#ffc0cb", "#ff69b4", "#ff91a4", "#ffa6c9"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         petal.style.backgroundColor = randomColor;
 
+        // Thiết lập hình dạng ngẫu nhiên cho cánh hoa
+        const borderRadius = [
+          "50% 0 50% 50%",
+          "50% 50% 0 50%",
+          "0 50% 50% 50%",
+          "50% 50% 50% 0",
+        ];
+        const randomShape =
+          borderRadius[Math.floor(Math.random() * borderRadius.length)];
+        petal.style.borderRadius = randomShape;
+
+        // Thêm hiệu ứng xoay cho cánh hoa
+        const rotation = Math.random() * 360;
+        petal.style.transform = `rotate(${rotation}deg)`;
+
         // Thiết lập animation
-        const duration = 8 + Math.random() * 10;
+        const duration = 6 + Math.random() * 10;
         const delay = Math.random() * 15;
         petal.style.animation = `falling ${duration}s linear ${delay}s infinite`;
 
@@ -129,7 +97,7 @@ const Login = () => {
       }
     };
 
-    createFlowerPetals();
+    createSakuraPetals();
 
     // Cleanup
     return () => {
