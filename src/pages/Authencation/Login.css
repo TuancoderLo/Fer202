@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
 
 .login-container {
   display: flex;
@@ -8,17 +9,50 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf5 100%);
   font-family: "Poppins", sans-serif;
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Thêm hiệu ứng hình nền */
+.login-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("https://i.imgur.com/JqZXFbM.png") repeat;
+  opacity: 0.05;
+  z-index: 0;
+  animation: backgroundMove 60s linear infinite;
+}
+
+@keyframes backgroundMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1000px 1000px;
+  }
 }
 
 .login-card {
   position: relative;
   width: 100%;
   max-width: 450px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   padding: 40px;
+  backdrop-filter: blur(10px);
+  transform: translateY(0);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 }
 
 .login-flower-decoration {
@@ -29,6 +63,11 @@
   background-repeat: no-repeat;
   opacity: 0.8;
   z-index: 0;
+  transition: all 0.5s ease;
+}
+
+.login-card:hover .login-flower-decoration {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .top-left {
@@ -36,6 +75,7 @@
   left: -30px;
   background-image: url("https://i.imgur.com/JqZXFbM.png");
   transform: rotate(-15deg);
+  animation: float 6s ease-in-out infinite;
 }
 
 .top-right {
@@ -43,6 +83,7 @@
   right: -20px;
   background-image: url("https://i.imgur.com/8KCT1k5.png");
   transform: rotate(15deg);
+  animation: float 7s ease-in-out infinite;
 }
 
 .bottom-left {
@@ -50,6 +91,7 @@
   left: -30px;
   background-image: url("https://i.imgur.com/pDGUJJZ.png");
   transform: rotate(-30deg);
+  animation: float 8s ease-in-out infinite;
 }
 
 .bottom-right {
@@ -57,6 +99,19 @@
   right: -20px;
   background-image: url("https://i.imgur.com/JqZXFbM.png");
   transform: rotate(30deg) scale(0.8);
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
 }
 
 .login-content {
@@ -66,10 +121,14 @@
 
 .login-title {
   color: #333;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 5px;
   text-align: center;
+  background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .login-subtitle {
@@ -83,10 +142,27 @@
   background-color: #ffebee;
   color: #d32f2f;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 20px;
   font-size: 14px;
   text-align: center;
+  border-left: 4px solid #d32f2f;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
 }
 
 .login-form {
@@ -103,10 +179,16 @@
   font-size: 14px;
   margin-bottom: 8px;
   font-weight: 500;
+  transition: color 0.3s;
+}
+
+.form-group:focus-within label {
+  color: #f06292;
 }
 
 .input-container {
   position: relative;
+  transition: all 0.3s;
 }
 
 .input-icon {
@@ -115,13 +197,18 @@
   top: 50%;
   transform: translateY(-50%);
   color: #aaa;
+  transition: color 0.3s;
+}
+
+.input-container:focus-within .input-icon {
+  color: #f06292;
 }
 
 .input-container input {
   width: 100%;
   padding: 15px 15px 15px 45px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   font-size: 14px;
   transition: all 0.3s;
   background-color: #f9f9f9;
@@ -129,7 +216,7 @@
 
 .input-container input:focus {
   border-color: #f8bbd0;
-  box-shadow: 0 0 0 2px rgba(248, 187, 208, 0.3);
+  box-shadow: 0 0 0 4px rgba(248, 187, 208, 0.3);
   outline: none;
   background-color: #fff;
 }
@@ -150,17 +237,34 @@
 .remember-me input {
   margin-right: 8px;
   accent-color: #f06292;
+  width: 16px;
+  height: 16px;
 }
 
 .forgot-password {
   color: #f06292;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.forgot-password::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #f06292;
+  transition: width 0.3s;
 }
 
 .forgot-password:hover {
   color: #ec407a;
-  text-decoration: underline;
+}
+
+.forgot-password:hover::after {
+  width: 100%;
 }
 
 .login-button {
@@ -168,13 +272,31 @@
   padding: 15px;
   background: linear-gradient(135deg, #f8bbd0 0%, #f06292 100%);
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   color: white;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: all 0.5s;
 }
 
 .login-button:hover {
@@ -183,22 +305,47 @@
   transform: translateY(-2px);
 }
 
+.login-button:hover::before {
+  left: 100%;
+}
+
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(240, 98, 146, 0.3);
+}
+
 .login-footer {
   text-align: center;
   color: #777;
   font-size: 14px;
+  margin-top: 20px;
 }
 
 .login-footer a {
   color: #f06292;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.login-footer a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #f06292;
+  transition: width 0.3s;
 }
 
 .login-footer a:hover {
   color: #ec407a;
-  text-decoration: underline;
+}
+
+.login-footer a:hover::after {
+  width: 100%;
 }
 
 /* Hiệu ứng hoa rơi */
@@ -208,7 +355,7 @@
     opacity: 0;
   }
   50% {
-    opacity: 1;
+    opacity: 0.7;
   }
   100% {
     transform: translateY(1000%) rotate(360deg);
@@ -222,19 +369,92 @@
   height: 15px;
   background-color: #f8bbd0;
   border-radius: 15px 0;
-  opacity: 0.7;
-  animation: falling 10s linear infinite;
+  opacity: 0;
+  z-index: 0;
+}
+
+/* Thêm các hoa rơi vào container */
+.login-container::after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  z-index: 1;
+}
+
+/* Tạo nhiều hoa rơi với vị trí và thời gian khác nhau */
+@keyframes petal1 {
+  0% {
+    left: 10%;
+    animation-delay: 0s;
+  }
+}
+@keyframes petal2 {
+  0% {
+    left: 20%;
+    animation-delay: 2s;
+  }
+}
+@keyframes petal3 {
+  0% {
+    left: 30%;
+    animation-delay: 4s;
+  }
+}
+@keyframes petal4 {
+  0% {
+    left: 40%;
+    animation-delay: 6s;
+  }
+}
+@keyframes petal5 {
+  0% {
+    left: 50%;
+    animation-delay: 8s;
+  }
+}
+@keyframes petal6 {
+  0% {
+    left: 60%;
+    animation-delay: 10s;
+  }
+}
+@keyframes petal7 {
+  0% {
+    left: 70%;
+    animation-delay: 12s;
+  }
+}
+@keyframes petal8 {
+  0% {
+    left: 80%;
+    animation-delay: 14s;
+  }
+}
+@keyframes petal9 {
+  0% {
+    left: 90%;
+    animation-delay: 16s;
+  }
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .login-card {
     padding: 30px 20px;
+    border-radius: 20px;
   }
 
   .login-flower-decoration {
     width: 80px;
     height: 80px;
+  }
+
+  .login-title {
+    font-size: 28px;
   }
 
   .form-options {
@@ -244,5 +464,13 @@
 
   .forgot-password {
     margin-top: 10px;
+  }
+
+  .input-container input {
+    padding: 12px 12px 12px 40px;
+  }
+
+  .login-button {
+    padding: 12px;
   }
 }

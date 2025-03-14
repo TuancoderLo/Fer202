@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,31 +44,87 @@ const Login = () => {
     };
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Tạo hiệu ứng hoa rơi
+  useEffect(() => {
+    const createFlowerPetals = () => {
+      const container = document.querySelector(".login-container");
+      if (!container) return;
 
-    // Sử dụng hàm authenticateUser từ dataUser.js
-    const result = authenticateUser(email, password);
+      for (let i = 0; i < 15; i++) {
+        const petal = document.createElement("div");
+        petal.classList.add("flower-petal");
 
-    if (result.success) {
-      // Đăng nhập thành công
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userName", result.user.name);
-      localStorage.setItem("userRole", result.user.role);
-      localStorage.setItem("userId", result.user.id);
+        // Thiết lập vị trí ngẫu nhiên
+        const leftPos = Math.random() * 100;
+        petal.style.left = `${leftPos}%`;
 
-      // Thông báo thay đổi trạng thái đăng nhập
-      window.dispatchEvent(new Event("login-status-change"));
+        // Thiết lập kích thước ngẫu nhiên
+        const size = 10 + Math.random() * 15;
+        petal.style.width = `${size}px`;
+        petal.style.height = `${size}px`;
 
-      // Chuyển hướng dựa trên role
-      if (result.user.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/");
+        // Thiết lập màu ngẫu nhiên
+        const colors = ["#f8bbd0", "#f48fb1", "#f06292", "#ec407a"];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        petal.style.backgroundColor = randomColor;
+
+        // Thiết lập animation
+        const duration = 8 + Math.random() * 10;
+        const delay = Math.random() * 15;
+        petal.style.animation = `falling ${duration}s linear ${delay}s infinite`;
+
+        container.appendChild(petal);
       }
-    } else {
-      // Đăng nhập thất bại
-      setError(result.message);
+    };
+
+    createFlowerPetals();
+
+    // Cleanup
+    return () => {
+      const container = document.querySelector(".login-container");
+      if (container) {
+        const petals = container.querySelectorAll(".flower-petal");
+        petals.forEach((petal) => petal.remove());
+      }
+    };
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      // Thêm hiệu ứng loading
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      // Sử dụng hàm authenticateUser từ dataUser.js
+      const result = authenticateUser(email, password);
+
+      if (result.success) {
+        // Đăng nhập thành công
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userName", result.user.name);
+        localStorage.setItem("userRole", result.user.role);
+        localStorage.setItem("userId", result.user.id);
+
+        // Thông báo thay đổi trạng thái đăng nhập
+        window.dispatchEvent(new Event("login-status-change"));
+
+        // Chuyển hướng dựa trên role
+        if (result.user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      } else {
+        // Đăng nhập thất bại
+        setError(result.message);
+      }
+    } catch (err) {
+      setError("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -126,8 +183,18 @@ const Login = () => {
               </a>
             </div>
 
-            <button type="submit" className="login-button">
-              Đăng Nhập
+            <button type="submit" className="login-button" disabled={loading}>
+              {loading ? (
+                <span>
+                  <i
+                    className="fas fa-spinner fa-spin"
+                    style={{ marginRight: "8px" }}
+                  ></i>
+                  Đang xử lý...
+                </span>
+              ) : (
+                "Đăng Nhập"
+              )}
             </button>
           </form>
 
