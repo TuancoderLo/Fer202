@@ -7,7 +7,7 @@ import useTheme from "../hooks/useTheme";
 const OrchidsContainer = () => {
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode } = useTheme();
 
   const handleShowDetail = (orchid) => {
     setSelectedOrchid(orchid);
@@ -16,11 +16,6 @@ const OrchidsContainer = () => {
 
   return (
     <div className="page-container">
-      <div className="theme-toggle">
-        <button onClick={toggleTheme}>
-          {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-        </button>
-      </div>
       <div className="orchids-container">
         <h2>Bộ Sưu Tập Lan Quý</h2>
         <p className="intro-text">

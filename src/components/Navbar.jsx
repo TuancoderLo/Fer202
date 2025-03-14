@@ -10,9 +10,13 @@ const Navbar = () => {
         <Link to="/">Bộ Sưu Tập Lan Quý</Link>
       </div>
       <div className="nav-links">
-        <Link to="/">Trang Chủ</Link>
-        <Link to="/contact">Liên Hệ</Link>
-        <button onClick={toggleTheme} className="theme-toggle">
+        <Link to="/" className="nav-link">
+          Trang Chủ
+        </Link>
+        <Link to="/contact" className="nav-link">
+          Liên Hệ
+        </Link>
+        <button onClick={toggleTheme} className="theme-toggle-btn">
           {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
         </button>
       </div>
