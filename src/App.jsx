@@ -10,6 +10,7 @@ import Natural from "./components/Natural";
 import Special from "./components/Special";
 import Login from "./pages/Authencation/Login";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import OrchidManagement from "./pages/Admin/OrchidManagement";
 import PrivateRoute from "./components/PrivateRoute";
 import getTheme from "./theme";
 import "./App.css";
@@ -66,8 +67,14 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <div className="app">
-          {isLoggedIn && <Navbar toggleTheme={toggleTheme} mode={mode} />}
-          <main className={`main-content ${isLoggedIn ? "with-navbar" : ""}`}>
+          {isLoggedIn && userRole !== "admin" && (
+            <Navbar toggleTheme={toggleTheme} mode={mode} />
+          )}
+          <main
+            className={`main-content ${
+              isLoggedIn && userRole !== "admin" ? "with-navbar" : ""
+            }`}
+          >
             <Routes>
               {/* Route công khai */}
               <Route
@@ -86,7 +93,7 @@ function App() {
 
               {/* Route cho admin */}
               <Route
-                path="/admin"
+                path="/admin/*"
                 element={
                   isLoggedIn && userRole === "admin" ? (
                     <AdminDashboard />
