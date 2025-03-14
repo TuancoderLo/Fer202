@@ -27,6 +27,7 @@ import {
   Alert,
   Snackbar,
   CircularProgress,
+  Pagination,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -37,8 +38,11 @@ import {
   Nature as NatureIcon,
   Image as ImageIcon,
   VideoLibrary as VideoIcon,
+  Refresh as RefreshIcon,
 } from "@mui/icons-material";
-import { orchids } from "../../data/ListOfOrchids";
+import axios from "axios";
+
+const API_URL = "https://678b95c11a6b89b27a2acf18.mockapi.io/Orchid";
 
 const OrchidManagement = () => {
   const [orchidsList, setOrchidsList] = useState([]);
@@ -63,15 +67,37 @@ const OrchidManagement = () => {
     message: "",
     severity: "success",
   });
+  const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
 
-  // Lấy dữ liệu lan
-  useEffect(() => {
-    // Giả lập API call
-    setTimeout(() => {
-      setOrchidsList(orchids);
+  // Lấy dữ liệu lan từ API
+  const fetchOrchids = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(API_URL);
+      setOrchidsList(response.data);
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu:", error);
+      setSnackbar({
+        open: true,
+        message: "Lỗi khi lấy dữ liệu: " + error.message,
+        severity: "error",
+      });
+    } finally {
       setLoading(false);
-    }, 1000);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrchids();
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchOrchids();
+  };
 
   const handleOpenDialog = (orchid = null) => {
     if (orchid) {
@@ -103,22 +129,48 @@ const OrchidManagement = () => {
     const { name, value, checked, type } = e.target;
     setCurrentOrchid({
       ...currentOrchid,
-      [name]: type === "checkbox" ? checked : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : type === "number"
+          ? Number(value)
+          : value,
     });
   };
 
   const handleRatingChange = (event, newValue) => {
     setCurrentOrchid({
       ...currentOrchid,
-      rating: newValue,
+      rating: Math.round(newValue * 20), // Chuyển đổi từ thang 5 sao sang thang 100
     });
   };
 
-  const handleSaveOrchid = () => {
-    if (isEditing) {
-      // Cập nhật lan
+  // Thêm lan mới
+  const addOrchid = async (orchidData) => {
+    try {
+      const response = await axios.post(API_URL, orchidData);
+      setOrchidsList([...orchidsList, response.data]);
+      setSnackbar({
+        open: true,
+        message: "Thêm lan mới thành công!",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Lỗi khi thêm lan:", error);
+      setSnackbar({
+        open: true,
+        message: "Lỗi khi thêm lan: " + error.message,
+        severity: "error",
+      });
+    }
+  };
+
+  // Cập nhật lan
+  const updateOrchid = async (id, orchidData) => {
+    try {
+      const response = await axios.put(`${API_URL}/${id}`, orchidData);
       const updatedList = orchidsList.map((item) =>
-        item.id === currentOrchid.id ? currentOrchid : item
+        item.id === id ? response.data : item
       );
       setOrchidsList(updatedList);
       setSnackbar({
@@ -126,24 +178,20 @@ const OrchidManagement = () => {
         message: "Cập nhật lan thành công!",
         severity: "success",
       });
-    } else {
-      // Thêm lan mới
-      const newOrchid = {
-        ...currentOrchid,
-        id: Date.now().toString(),
-      };
-      setOrchidsList([...orchidsList, newOrchid]);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật lan:", error);
       setSnackbar({
         open: true,
-        message: "Thêm lan mới thành công!",
-        severity: "success",
+        message: "Lỗi khi cập nhật lan: " + error.message,
+        severity: "error",
       });
     }
-    handleCloseDialog();
   };
 
-  const handleDeleteOrchid = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa lan này?")) {
+  // Xóa lan
+  const deleteOrchid = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
       const updatedList = orchidsList.filter((item) => item.id !== id);
       setOrchidsList(updatedList);
       setSnackbar({
@@ -151,6 +199,44 @@ const OrchidManagement = () => {
         message: "Xóa lan thành công!",
         severity: "success",
       });
+    } catch (error) {
+      console.error("Lỗi khi xóa lan:", error);
+      setSnackbar({
+        open: true,
+        message: "Lỗi khi xóa lan: " + error.message,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleSaveOrchid = () => {
+    // Kiểm tra dữ liệu đầu vào
+    if (
+      !currentOrchid.name ||
+      !currentOrchid.image ||
+      !currentOrchid.origin ||
+      !currentOrchid.color ||
+      !currentOrchid.category
+    ) {
+      setSnackbar({
+        open: true,
+        message: "Vui lòng điền đầy đủ thông tin bắt buộc!",
+        severity: "warning",
+      });
+      return;
+    }
+
+    if (isEditing) {
+      updateOrchid(currentOrchid.id, currentOrchid);
+    } else {
+      addOrchid(currentOrchid);
+    }
+    handleCloseDialog();
+  };
+
+  const handleDeleteOrchid = (id) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa lan này?")) {
+      deleteOrchid(id);
     }
   };
 
@@ -161,6 +247,10 @@ const OrchidManagement = () => {
     });
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   // Lọc lan theo từ khóa tìm kiếm
   const filteredOrchids = orchidsList.filter(
     (orchid) =>
@@ -168,6 +258,12 @@ const OrchidManagement = () => {
       orchid.origin.toLowerCase().includes(searchTerm.toLowerCase()) ||
       orchid.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
       orchid.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Phân trang
+  const paginatedOrchids = filteredOrchids.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
   );
 
   return (
@@ -193,21 +289,34 @@ const OrchidManagement = () => {
           mb: 3,
         }}
       >
-        <TextField
-          placeholder="Tìm kiếm theo tên, xuất xứ, màu sắc, danh mục..."
-          variant="outlined"
-          size="small"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: "50%" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: 2, width: "60%" }}
+        >
+          <TextField
+            placeholder="Tìm kiếm theo tên, xuất xứ, màu sắc, danh mục..."
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ flexGrow: 1 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Tooltip title="Làm mới dữ liệu">
+            <IconButton
+              onClick={handleRefresh}
+              color="primary"
+              disabled={refreshing}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -222,132 +331,159 @@ const OrchidManagement = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer
-          component={Paper}
-          sx={{ borderRadius: 2, overflow: "hidden" }}
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Hình ảnh</TableCell>
-                <TableCell>Tên</TableCell>
-                <TableCell>Xuất xứ</TableCell>
-                <TableCell>Màu sắc</TableCell>
-                <TableCell>Danh mục</TableCell>
-                <TableCell>Đánh giá</TableCell>
-                <TableCell>Lượt thích</TableCell>
-                <TableCell>Đặc biệt</TableCell>
-                <TableCell>Tự nhiên</TableCell>
-                <TableCell align="center">Thao tác</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredOrchids.length > 0 ? (
-                filteredOrchids.map((orchid) => (
-                  <TableRow key={orchid.id}>
-                    <TableCell>
-                      <Box
-                        component="img"
-                        src={orchid.image}
-                        alt={orchid.name}
-                        sx={{
-                          width: 60,
-                          height: 60,
-                          borderRadius: 1,
-                          objectFit: "cover",
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>{orchid.name}</TableCell>
-                    <TableCell>{orchid.origin}</TableCell>
-                    <TableCell>
-                      <Chip
-                        label={orchid.color}
-                        size="small"
-                        sx={{
-                          bgcolor:
-                            orchid.color.toLowerCase() === "trắng"
-                              ? "#f5f5f5"
-                              : orchid.color.toLowerCase() === "đỏ"
-                              ? "#ffebee"
-                              : orchid.color.toLowerCase() === "vàng"
-                              ? "#fffde7"
-                              : orchid.color.toLowerCase() === "tím"
-                              ? "#f3e5f5"
-                              : orchid.color.toLowerCase() === "hồng"
-                              ? "#fce4ec"
-                              : "#e0f7fa",
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>{orchid.category}</TableCell>
-                    <TableCell>
-                      <Rating
-                        value={orchid.rating / 20}
-                        precision={0.5}
-                        readOnly
-                        size="small"
-                      />
-                    </TableCell>
-                    <TableCell>{orchid.numberOfLike}</TableCell>
-                    <TableCell>
-                      {orchid.isSpecial ? (
-                        <Chip
-                          icon={<StarIcon />}
-                          label="Đặc biệt"
-                          size="small"
-                          color="warning"
-                          variant="outlined"
+        <>
+          <TableContainer
+            component={Paper}
+            sx={{ borderRadius: 2, overflow: "hidden", mb: 3 }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Hình ảnh</TableCell>
+                  <TableCell>Tên</TableCell>
+                  <TableCell>Xuất xứ</TableCell>
+                  <TableCell>Màu sắc</TableCell>
+                  <TableCell>Danh mục</TableCell>
+                  <TableCell>Đánh giá</TableCell>
+                  <TableCell>Lượt thích</TableCell>
+                  <TableCell>Đặc biệt</TableCell>
+                  <TableCell>Tự nhiên</TableCell>
+                  <TableCell align="center">Thao tác</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paginatedOrchids.length > 0 ? (
+                  paginatedOrchids.map((orchid) => (
+                    <TableRow key={orchid.id}>
+                      <TableCell>
+                        <Box
+                          component="img"
+                          src={orchid.image}
+                          alt={orchid.name}
+                          sx={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: 1,
+                            objectFit: "cover",
+                            border: "1px solid #eee",
+                          }}
+                          onError={(e) => {
+                            e.target.src =
+                              "https://via.placeholder.com/60x60?text=No+Image";
+                          }}
                         />
-                      ) : (
-                        "Không"
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {orchid.isNatural ? (
+                      </TableCell>
+                      <TableCell>{orchid.name}</TableCell>
+                      <TableCell>{orchid.origin}</TableCell>
+                      <TableCell>
                         <Chip
-                          icon={<NatureIcon />}
-                          label="Tự nhiên"
+                          label={orchid.color}
                           size="small"
-                          color="success"
-                          variant="outlined"
+                          sx={{
+                            bgcolor:
+                              orchid.color.toLowerCase() === "trắng" ||
+                              orchid.color.toLowerCase() === "white"
+                                ? "#f5f5f5"
+                                : orchid.color.toLowerCase() === "đỏ" ||
+                                  orchid.color.toLowerCase() === "red"
+                                ? "#ffebee"
+                                : orchid.color.toLowerCase() === "vàng" ||
+                                  orchid.color.toLowerCase() === "yellow"
+                                ? "#fffde7"
+                                : orchid.color.toLowerCase() === "tím" ||
+                                  orchid.color.toLowerCase() === "purple"
+                                ? "#f3e5f5"
+                                : orchid.color.toLowerCase() === "hồng" ||
+                                  orchid.color.toLowerCase() === "pink"
+                                ? "#fce4ec"
+                                : "#e0f7fa",
+                          }}
                         />
-                      ) : (
-                        "Không"
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Tooltip title="Sửa">
-                        <IconButton
-                          onClick={() => handleOpenDialog(orchid)}
-                          color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Xóa">
-                        <IconButton
-                          onClick={() => handleDeleteOrchid(orchid.id)}
-                          color="error"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      </TableCell>
+                      <TableCell>{orchid.category}</TableCell>
+                      <TableCell>
+                        <Rating
+                          value={orchid.rating / 20}
+                          precision={0.5}
+                          readOnly
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>{orchid.numberOfLike}</TableCell>
+                      <TableCell>
+                        {orchid.isSpecial ? (
+                          <Chip
+                            icon={<StarIcon />}
+                            label="Đặc biệt"
+                            size="small"
+                            color="warning"
+                            variant="outlined"
+                          />
+                        ) : (
+                          "Không"
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {orchid.isNatural ? (
+                          <Chip
+                            icon={<NatureIcon />}
+                            label="Tự nhiên"
+                            size="small"
+                            color="success"
+                            variant="outlined"
+                          />
+                        ) : (
+                          "Không"
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Tooltip title="Sửa">
+                          <IconButton
+                            onClick={() => handleOpenDialog(orchid)}
+                            color="primary"
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Xóa">
+                          <IconButton
+                            onClick={() => handleDeleteOrchid(orchid.id)}
+                            color="error"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={10} align="center">
+                      <Typography variant="body1" sx={{ py: 3 }}>
+                        {searchTerm
+                          ? "Không tìm thấy lan phù hợp"
+                          : "Chưa có dữ liệu lan"}
+                      </Typography>
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={10} align="center">
-                    <Typography variant="body1" sx={{ py: 3 }}>
-                      Không tìm thấy lan phù hợp
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          {filteredOrchids.length > 0 && (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Pagination
+                count={Math.ceil(filteredOrchids.length / rowsPerPage)}
+                page={page}
+                onChange={handleChangePage}
+                color="primary"
+                showFirstButton
+                showLastButton
+              />
+            </Box>
+          )}
+        </>
       )}
 
       {/* Dialog thêm/sửa lan */}
@@ -433,13 +569,16 @@ const OrchidManagement = () => {
                 }}
               />
               <Box sx={{ mt: 2 }}>
-                <Typography component="legend">Đánh giá</Typography>
+                <Typography component="legend">Đánh giá (0-100)</Typography>
                 <Rating
                   name="rating"
                   value={currentOrchid.rating / 20}
                   precision={0.5}
                   onChange={handleRatingChange}
                 />
+                <Typography variant="caption" color="text.secondary">
+                  Giá trị hiện tại: {currentOrchid.rating}/100
+                </Typography>
               </Box>
               <TextField
                 fullWidth
@@ -449,6 +588,7 @@ const OrchidManagement = () => {
                 value={currentOrchid.numberOfLike}
                 onChange={handleInputChange}
                 margin="normal"
+                InputProps={{ inputProps: { min: 0 } }}
               />
               <Box sx={{ mt: 2 }}>
                 <FormControlLabel
