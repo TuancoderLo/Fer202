@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { orchids } from "../data/ListOfOrchids";
-import { useState } from "react";
+import api from "../config/axios";
+import { useState, useEffect } from "react";
 import {
   Tabs,
   Tab,
@@ -11,6 +11,7 @@ import {
   AccordionDetails,
   Button,
   Chip,
+  CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -43,17 +44,54 @@ function TabPanel(props) {
 const OrchidDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const orchid = orchids.find((o) => o.id === id);
+  const [orchid, setOrchid] = useState(null);
   const [tabValue, setTabValue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchOrchidDetail = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/${id}`);
+        setOrchid(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu chi tiết:", err);
+        setError("Không thể tải thông tin chi tiết. Vui lòng thử lại sau.");
+        setLoading(false);
+      }
+    };
+
+    fetchOrchidDetail();
+  }, [id]);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  if (!orchid) {
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h6" sx={{ ml: 2 }}>
+          Đang tải thông tin...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error || !orchid) {
     return (
       <div className="error-page">
-        <h2>Không tìm thấy thông tin hoa lan</h2>
+        <h2>{error || "Không tìm thấy thông tin hoa lan"}</h2>
         <button onClick={() => navigate("/")}>Quay về trang chủ</button>
       </div>
     );
@@ -76,7 +114,9 @@ const OrchidDetail = () => {
                 <Box display="flex" alignItems="center" gap={1} mb={1}>
                   <StarIcon sx={{ color: "#FFD700" }} />
                   <Typography variant="body1">
-                    {Array(orchid.rating).fill("⭐").join("")}
+                    {Array(Math.floor(orchid.rating / 20))
+                      .fill("⭐")
+                      .join("")}
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="center" gap={1} mb={1}>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { orchids } from "../data/ListOfOrchids";
+import api from "../config/axios";
 import OrchidsList from "./OrchidsList";
 import OrchidModal from "./OrchidModal";
 import {
@@ -18,6 +18,7 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -30,13 +31,35 @@ import { Link } from "react-router-dom";
 const OrchidsContainer = () => {
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filteredOrchids, setFilteredOrchids] = useState(orchids);
+  const [orchids, setOrchids] = useState([]);
+  const [filteredOrchids, setFilteredOrchids] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tabValue, setTabValue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isMedium = useMediaQuery(theme.breakpoints.down("md"));
+
+  // Lấy dữ liệu từ API
+  useEffect(() => {
+    const fetchOrchids = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("/");
+        setOrchids(response.data);
+        setFilteredOrchids(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        setError("Không thể tải dữ liệu. Vui lòng thử lại sau.");
+        setLoading(false);
+      }
+    };
+
+    fetchOrchids();
+  }, []);
 
   const handleShowDetail = (orchid) => {
     setSelectedOrchid(orchid);
@@ -90,6 +113,45 @@ const OrchidsContainer = () => {
   const totalOrchids = orchids.length;
   const specialOrchids = orchids.filter((o) => o.isSpecial).length;
   const naturalOrchids = orchids.filter((o) => o.isNatural).length;
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h6" sx={{ ml: 2 }}>
+          Đang tải dữ liệu...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Typography variant="h5" color="error" gutterBottom>
+          {error}
+        </Typography>
+        <Button variant="contained" onClick={() => window.location.reload()}>
+          Thử lại
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ py: 4, bgcolor: "background.default", minHeight: "100vh" }}>

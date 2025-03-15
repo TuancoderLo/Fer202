@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { orchids } from "../data/ListOfOrchids";
+import React, { useState, useEffect } from "react";
+import api from "../config/axios";
 import {
   Container,
   Typography,
@@ -23,6 +23,7 @@ import {
   DialogActions,
   Paper,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -34,15 +35,39 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import NatureIcon from "@mui/icons-material/Nature";
 
 const Natural = () => {
-  // Lọc ra các loài lan tự nhiên
-  const naturalOrchids = orchids.filter((orchid) => orchid.isNatural);
   const theme = useTheme();
-
-  const [filteredOrchids, setFilteredOrchids] = useState(naturalOrchids);
+  const [orchids, setOrchids] = useState([]);
+  const [naturalOrchids, setNaturalOrchids] = useState([]);
+  const [filteredOrchids, setFilteredOrchids] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tabValue, setTabValue] = useState(0);
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Lấy dữ liệu từ API
+  useEffect(() => {
+    const fetchOrchids = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("/");
+        const allOrchids = response.data;
+        const natural = allOrchids.filter((orchid) => orchid.isNatural);
+
+        setOrchids(allOrchids);
+        setNaturalOrchids(natural);
+        setFilteredOrchids(natural);
+        setLoading(false);
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        setError("Không thể tải dữ liệu. Vui lòng thử lại sau.");
+        setLoading(false);
+      }
+    };
+
+    fetchOrchids();
+  }, []);
 
   // Xử lý tìm kiếm
   const handleSearch = (event) => {
@@ -94,6 +119,45 @@ const Natural = () => {
     setSelectedOrchid(orchid);
     setOpenDialog(true);
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h6" sx={{ ml: 2 }}>
+          Đang tải dữ liệu...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Typography variant="h5" color="error" gutterBottom>
+          {error}
+        </Typography>
+        <Button variant="contained" onClick={() => window.location.reload()}>
+          Thử lại
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
@@ -272,7 +336,7 @@ const Natural = () => {
                     <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <StarIcon sx={{ color: "#FFD700", mr: 1 }} />
                       <Typography variant="body2" sx={{ fontWeight: "medium" }}>
-                        {orchid.rating}/5
+                        {Math.floor(orchid.rating / 20)}/5
                       </Typography>
 
                       <Box

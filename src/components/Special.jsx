@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { orchids } from "../data/ListOfOrchids";
+import React, { useState, useEffect } from "react";
+import api from "../config/axios";
 import {
   Container,
   Typography,
@@ -21,6 +21,7 @@ import {
   Rating,
   Paper,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -43,12 +44,35 @@ const style = {
 };
 
 const Special = () => {
-  // Lọc ra các loài lan đặc biệt
-  const specialOrchids = orchids.filter((orchid) => orchid.isSpecial);
   const theme = useTheme();
-
+  const [orchids, setOrchids] = useState([]);
+  const [specialOrchids, setSpecialOrchids] = useState([]);
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Lấy dữ liệu từ API
+  useEffect(() => {
+    const fetchOrchids = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("/");
+        const allOrchids = response.data;
+        const special = allOrchids.filter((orchid) => orchid.isSpecial);
+
+        setOrchids(allOrchids);
+        setSpecialOrchids(special);
+        setLoading(false);
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        setError("Không thể tải dữ liệu. Vui lòng thử lại sau.");
+        setLoading(false);
+      }
+    };
+
+    fetchOrchids();
+  }, []);
 
   const handleOpenModal = (orchid) => {
     setSelectedOrchid(orchid);
@@ -58,6 +82,45 @@ const Special = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h6" sx={{ ml: 2 }}>
+          Đang tải dữ liệu...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Typography variant="h5" color="error" gutterBottom>
+          {error}
+        </Typography>
+        <Button variant="contained" onClick={() => window.location.reload()}>
+          Thử lại
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
@@ -181,7 +244,7 @@ const Special = () => {
                     <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <Rating
                         name="read-only"
-                        value={specialOrchids[0].rating}
+                        value={Math.floor(specialOrchids[0].rating / 20)}
                         readOnly
                         precision={0.5}
                       />
@@ -190,7 +253,7 @@ const Special = () => {
                         color="text.secondary"
                         sx={{ ml: 1 }}
                       >
-                        ({specialOrchids[0].rating}/5)
+                        ({Math.floor(specialOrchids[0].rating / 20)}/5)
                       </Typography>
                     </Box>
                     <Typography
@@ -306,7 +369,7 @@ const Special = () => {
           <Grid container spacing={3}>
             {specialOrchids.map((orchid, index) => {
               // Skip the first orchid as it's already featured
-              if (index === 0) return null;
+              if (index === 0 && specialOrchids.length > 1) return null;
 
               return (
                 <Grid item xs={12} sm={6} md={4} key={orchid.id}>
@@ -350,7 +413,7 @@ const Special = () => {
                           <StarIcon
                             sx={{ color: "#FFD700", mr: 0.5, fontSize: "1rem" }}
                           />
-                          {orchid.rating}
+                          {Math.floor(orchid.rating / 20)}
                         </Typography>
                       </Box>
                       <IconButton
