@@ -3,137 +3,156 @@
 
 .admin-sidebar {
   flex-shrink: 0;
-  position: fixed; /* Cố định sidebar */
+  position: fixed;
   height: 100vh;
   z-index: 1200;
-  overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
-  transition: all var(--transition-time);
-  width: 280px;
+  overflow: hidden;
+  width: 250px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
 .admin-sidebar-paper {
-  position: static !important; /* Ghi đè style của Material UI */
-  width: 280px;
+  position: static !important;
+  width: 250px;
   height: 100%;
-  border-right: 1px solid var(--admin-border-color) !important;
-  background-color: var(--admin-sidebar-bg) !important;
-  color: var(--admin-sidebar-text) !important;
-  transition: background-color var(--transition-time),
-    color var(--transition-time), border-color var(--transition-time);
+  border-right: none !important;
+  background-color: white !important;
+  color: #333 !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-sidebar-header {
-  padding: 20px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-.admin-sidebar-header .MuiTypography-root {
-  color: var(--admin-text-primary) !important;
-}
-
-.admin-sidebar-header .MuiTypography-caption {
-  color: var(--admin-text-secondary) !important;
-}
-
-.admin-user-info {
-  padding: 20px;
+.logo-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #4552cb;
 }
 
-.admin-user-info .MuiTypography-root {
-  color: var(--admin-text-primary) !important;
+.logo-icon {
+  color: white !important;
+  font-size: 22px !important;
 }
 
-.admin-user-info .MuiTypography-caption {
-  color: var(--admin-text-secondary) !important;
+.app-title {
+  color: #333 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  margin: 0 !important;
+}
+
+.app-subtitle {
+  color: #777 !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+}
+
+.sidebar-divider {
+  margin: 4px 0 !important;
+  background-color: #f0f0f0 !important;
 }
 
 .admin-menu {
-  overflow-y: auto;
-  max-height: calc(
-    100vh - 300px
-  ); /* Chiều cao phù hợp với không gian còn lại */
+  flex: 1;
+  padding: 8px !important;
+  overflow: visible !important;
 }
 
-.admin-menu .MuiListItem-root {
-  padding: 12px 20px;
-  margin: 4px 10px;
-  border-radius: 8px;
-  position: relative;
-  transition: background-color var(--transition-time);
+.menu-item,
+.active-menu-item {
+  padding: 8px 16px !important;
+  margin: 4px 0 !important;
+  border-radius: 8px !important;
+  height: 40px !important;
 }
 
-.admin-menu .MuiListItem-root:hover {
-  background-color: var(--admin-sidebar-hover) !important;
+.menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
-.admin-menu .MuiListItemIcon-root {
-  min-width: 40px;
-  color: var(--admin-sidebar-icon) !important;
+.menu-item .MuiListItemIcon-root {
+  min-width: 36px;
+  color: #666 !important;
 }
 
-.admin-menu .MuiListItemText-primary {
-  color: var(--admin-sidebar-text) !important;
+.menu-item .MuiListItemText-primary {
+  color: #333 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
 }
 
 .active-menu-item {
-  background-color: var(--admin-sidebar-active) !important;
+  background-color: rgba(69, 82, 203, 0.08) !important;
 }
 
 .active-menu-item .MuiListItemIcon-root {
-  color: var(--admin-sidebar-active-icon) !important;
+  color: #4552cb !important;
 }
 
 .active-menu-item .MuiListItemText-primary {
-  color: var(--admin-sidebar-active-icon) !important;
+  color: #4552cb !important;
   font-weight: 600 !important;
 }
 
-.active-indicator {
-  position: absolute;
-  right: 0;
-  top: 8px;
-  bottom: 8px;
-  width: 4px;
-  background-color: var(--admin-sidebar-active-icon);
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+.sidebar-footer {
+  padding: 16px;
+  margin-top: auto;
 }
 
-/* Nút đăng xuất */
-.admin-sidebar .MuiButton-outlinedError {
-  border-color: #f44336 !important;
-  color: #f44336 !important;
+.logout-button {
+  text-transform: none !important;
+  background-color: #f44336 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 0 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
 }
 
-.dark-mode .admin-sidebar .MuiButton-outlinedError {
-  border-color: #f44336 !important;
-  color: #f44336 !important;
-}
-
-/* Đảm bảo avatar trong sidebar hiển thị đúng */
-.admin-sidebar .MuiAvatar-root {
-  background-color: var(--admin-sidebar-active-icon);
-  color: white;
+.logout-button:hover {
+  background-color: #d32f2f !important;
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .admin-sidebar-paper {
-    background-color: #1e1e1e;
-    border-right: 1px solid rgba(255, 255, 255, 0.12);
-  }
+.dark-mode .admin-sidebar-paper {
+  background-color: #1a1a1a !important;
+  color: #f0f0f0 !important;
+}
 
-  .admin-menu .MuiListItemIcon-root {
-    color: #b0b0b0;
-  }
+.dark-mode .app-title {
+  color: #f0f0f0 !important;
+}
 
-  .active-menu-item {
-    background-color: rgba(144, 202, 249, 0.16) !important;
-  }
+.dark-mode .app-subtitle {
+  color: #bbb !important;
+}
+
+.dark-mode .sidebar-divider {
+  background-color: #333 !important;
+}
+
+.dark-mode .menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark-mode .menu-item .MuiListItemIcon-root {
+  color: #aaa !important;
+}
+
+.dark-mode .menu-item .MuiListItemText-primary {
+  color: #f0f0f0 !important;
+}
+
+.dark-mode .active-menu-item {
+  background-color: rgba(85, 100, 235, 0.15) !important;
 }

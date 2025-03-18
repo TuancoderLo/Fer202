@@ -9,7 +9,6 @@ import {
   ListItemText,
   Typography,
   Divider,
-  Avatar,
   Button,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -25,8 +24,6 @@ import "./SideBar.css";
 
 const SideBar = ({ open, onClose, onLogout }) => {
   const location = useLocation();
-  const userName = localStorage.getItem("userName") || "Admin";
-  const userRole = localStorage.getItem("userRole");
   const { isDarkMode } = useTheme();
 
   const isActive = (path) => {
@@ -52,36 +49,22 @@ const SideBar = ({ open, onClose, onLogout }) => {
       }}
     >
       <Box className="admin-sidebar-header">
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Avatar sx={{ bgcolor: "primary.main" }}>
-            <LocalFloristIcon />
-          </Avatar>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <div className="logo-container">
+            <LocalFloristIcon className="logo-icon" />
+          </div>
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            <Typography variant="h6" className="app-title">
               Quản Trị Lan Quý
             </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.8 }}>
+            <Typography variant="caption" className="app-subtitle">
               Hệ thống quản lý bộ sưu tập
             </Typography>
           </Box>
         </Box>
       </Box>
 
-      <Divider />
-
-      <Box className="admin-user-info">
-        <Avatar sx={{ width: 60, height: 60, mb: 1 }}>
-          {userName.charAt(0)}
-        </Avatar>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-          {userName}
-        </Typography>
-        <Typography variant="caption" sx={{ color: "primary.main", mb: 1 }}>
-          {userRole === "admin" ? "Quản trị viên" : "Người dùng"}
-        </Typography>
-      </Box>
-
-      <Divider />
+      <Divider className="sidebar-divider" />
 
       <List className="admin-menu">
         {menuItems.map((item) => (
@@ -90,22 +73,21 @@ const SideBar = ({ open, onClose, onLogout }) => {
             component={Link}
             to={item.path}
             key={item.text}
-            className={isActive(item.path) ? "active-menu-item" : ""}
+            className={isActive(item.path) ? "active-menu-item" : "menu-item"}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
-            {isActive(item.path) && <div className="active-indicator" />}
           </ListItem>
         ))}
       </List>
 
-      <Box sx={{ mt: "auto", p: 2 }}>
+      <Box className="sidebar-footer">
         <Button
-          variant="outlined"
-          color="error"
+          variant="contained"
           startIcon={<LogoutIcon />}
           onClick={onLogout}
           fullWidth
+          className="logout-button"
         >
           Đăng xuất
         </Button>
