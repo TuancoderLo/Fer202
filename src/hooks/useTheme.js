@@ -1,25 +1,14 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const useTheme = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const context = useContext(ThemeContext);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    }
-  }, []);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
 
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    const theme = newTheme ? "dark" : "light";
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  };
-
-  return { isDarkMode, toggleTheme };
+  return context;
 };
 
 export default useTheme;

@@ -1,10 +1,203 @@
-.admin-main-content {
+/* Import biến CSS từ file riêng */
+@import "../../styles/variables.css";
+
+/* Biến CSS chỉ dành cho trang Admin */
+.light-mode {
+  --admin-bg: #f6f9fc;
+  --admin-text-primary: #333;
+  --admin-text-secondary: #637381;
+  --admin-card-bg: #ffffff;
+  --admin-border-color: rgba(0, 0, 0, 0.1);
+  --admin-paper-bg: #ffffff;
+  --admin-divider-color: #f0f0f0;
+  --admin-icon-bg-opacity: 0.1;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --admin-button-color: #1976d2;
+  --admin-button-hover: #1565c0;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.1);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.1);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.1);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.1);
+  --admin-sidebar-bg: #ffffff;
+  --admin-sidebar-text: #333;
+  --admin-sidebar-active: #f1f5f9;
+  --admin-sidebar-icon: #637381;
+  --admin-sidebar-active-icon: #1976d2;
+  --admin-sidebar-hover: #f8fafc;
+}
+
+.dark-mode {
+  --admin-bg: #111827;
+  --admin-text-primary: #f5f5f5;
+  --admin-text-secondary: #b0b0b0;
+  --admin-card-bg: #1f2937;
+  --admin-border-color: rgba(255, 255, 255, 0.1);
+  --admin-paper-bg: #1f2937;
+  --admin-divider-color: #333;
+  --admin-icon-bg-opacity: 0.2;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --admin-button-color: #90caf9;
+  --admin-button-hover: #42a5f5;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.2);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.2);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.2);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.2);
+  --admin-sidebar-bg: #1f2937;
+  --admin-sidebar-text: #f5f5f5;
+  --admin-sidebar-active: #2d3748;
+  --admin-sidebar-icon: #b0b0b0;
+  --admin-sidebar-active-icon: #90caf9;
+  --admin-sidebar-hover: #2d3748;
+}
+
+/* Main Container */
+.admin-main-content,
+.dark-mode .admin-main-content,
+.light-mode .admin-main-content {
   flex-grow: 1;
-  padding: 20px;
-  background-color: #f5f5f5;
+  padding: 24px;
+  background-color: var(--admin-bg);
+  color: var(--admin-text-primary);
   min-height: 100vh;
   margin-left: 280px;
-  transition: margin-left 0.3s;
+  transition: margin-left var(--transition-time),
+    background-color var(--transition-time), color var(--transition-time);
+}
+
+/* Override MUI Paper/Card styling */
+.admin-main-content .MuiPaper-root {
+  background-color: var(--admin-card-bg);
+  color: var(--admin-text-primary);
+  border: 1px solid var(--admin-border-color);
+}
+
+/* Override màu chữ cho các component MUI */
+.admin-main-content .MuiTypography-root {
+  color: var(--admin-text-primary);
+}
+
+.admin-main-content .MuiTypography-colorTextSecondary {
+  color: var(--admin-text-secondary);
+}
+
+/* Stat Cards */
+.admin-main-content .MuiGrid-item .MuiPaper-root {
+  transition: transform var(--transition-time) ease,
+    box-shadow var(--transition-time) ease;
+}
+
+.admin-main-content .MuiGrid-item .MuiPaper-root:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--admin-card-hover-shadow);
+}
+
+/* Stat Icons */
+.stat-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  margin-right: 16px;
+}
+
+/* Avatar trong card quản lý */
+.admin-main-content .MuiAvatar-root {
+  transition: transform 0.2s ease;
+}
+
+.admin-main-content .MuiAvatar-root:hover {
+  transform: scale(1.05);
+}
+
+/* Button styling */
+.admin-main-content .MuiButton-outlined {
+  border-color: var(--admin-button-color);
+  color: var(--admin-button-color);
+}
+
+.admin-main-content .MuiButton-outlined:hover {
+  border-color: var(--admin-button-hover);
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+.admin-main-content .MuiButton-contained {
+  background-color: var(--admin-button-color);
+  color: white;
+}
+
+.admin-main-content .MuiButton-contained:hover {
+  background-color: var(--admin-button-hover);
+}
+
+/* List Items */
+.admin-main-content .MuiListItem-root {
+  transition: background-color 0.2s ease;
+}
+
+.admin-main-content .MuiListItem-root:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dark-mode .admin-main-content .MuiListItem-root:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Dividers */
+.admin-main-content .MuiDivider-root {
+  background-color: var(--admin-divider-color);
+}
+
+/* Theme switch container */
+.theme-switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+/* Animation cho switch theme */
+.admin-main-content .MuiSwitch-root {
+  transition: opacity 0.3s ease;
+}
+
+.admin-main-content .MuiSwitch-root:hover {
+  opacity: 0.9;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .admin-main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-main-content {
+    padding: 16px;
+  }
+
+  .admin-main-content .MuiGrid-container {
+    gap: 16px;
+  }
+}
+
+/* Chuyển đổi màu sắc mượt mà */
+.admin-main-content *,
+.admin-main-content .MuiPaper-root,
+.admin-main-content .MuiCard-root,
+.admin-main-content .MuiTypography-root,
+.admin-main-content .MuiButton-root,
+.admin-main-content .MuiListItem-root,
+.admin-main-content .MuiDivider-root,
+.admin-main-content .MuiAvatar-root {
+  transition: background-color var(--transition-time) ease,
+    color var(--transition-time) ease, border-color var(--transition-time) ease,
+    box-shadow var(--transition-time) ease;
 }
 
 .admin-header {
@@ -17,7 +210,7 @@
 .admin-title {
   font-size: 24px;
   font-weight: 700;
-  color: #333;
+  color: var(--admin-text-primary);
 }
 
 .admin-user-info {
@@ -46,17 +239,17 @@
 }
 
 .admin-card {
-  background-color: white;
+  background-color: var(--admin-card-bg);
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--admin-card-shadow);
   padding: 24px;
   height: 100%;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
 .admin-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--admin-card-hover-shadow);
 }
 
 .admin-card-header {
@@ -78,13 +271,13 @@
 .admin-card-title {
   font-size: 16px;
   font-weight: 600;
-  color: #637381;
+  color: var(--admin-text-secondary);
 }
 
 .admin-card-value {
   font-size: 32px;
   font-weight: 700;
-  color: #333;
+  color: var(--admin-text-primary);
 }
 
 .admin-table {
@@ -96,13 +289,13 @@
 .admin-table td {
   padding: 16px;
   text-align: left;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--admin-divider-color);
 }
 
 .admin-table th {
   font-weight: 600;
-  color: #637381;
-  background-color: #f9fafb;
+  color: var(--admin-text-secondary);
+  background-color: var(--admin-paper-bg);
 }
 
 .admin-table tr:last-child td {
@@ -132,18 +325,15 @@
   color: #1976d2;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .admin-main-content {
-    margin-left: 0;
-    padding-left: 300px;
-  }
+/* Theme switch styles */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
-@media (max-width: 900px) {
-  .admin-main-content {
-    padding-left: 20px;
-  }
+.theme-switch-icon {
+  margin-right: 8px;
 }
 
 /* Dark mode support */
@@ -177,4 +367,144 @@
   .admin-table td {
     border-bottom: 1px solid #333;
   }
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Đảm bảo CSS cho SideBar được ưu tiên */
+.MuiDrawer-root .MuiPaper-root,
+.MuiDrawer-paper {
+  background-color: var(--admin-sidebar-bg) !important;
+  color: var(--admin-sidebar-text) !important;
+  border-right: 1px solid var(--admin-border-color) !important;
+}
+
+/* Các icon và text trong sidebar */
+.MuiListItemIcon-root {
+  color: var(--admin-sidebar-icon) !important;
+}
+
+.MuiListItemText-root .MuiTypography-root {
+  color: var(--admin-sidebar-text) !important;
+}
+
+/* Item được chọn trong sidebar */
+.MuiListItem-root.Mui-selected {
+  background-color: var(--admin-sidebar-active) !important;
+}
+
+.MuiListItem-root.Mui-selected .MuiListItemIcon-root {
+  color: var(--admin-sidebar-active-icon) !important;
+}
+
+.MuiListItem-root:hover {
+  background-color: var(--admin-sidebar-hover) !important;
+}
+
+/* Avatar trong sidebar */
+.MuiAvatar-root.admin-avatar {
+  background-color: var(--admin-stat-card-3);
+  color: var(--admin-text-primary);
+}
+
+/* Thêm CSS cho bảng quản lý */
+.admin-table {
+  background-color: var(--admin-card-bg);
+  border-radius: 12px;
+  box-shadow: var(--admin-card-shadow);
+  overflow: hidden;
+}
+
+.admin-table .MuiTableCell-head {
+  background-color: var(--admin-paper-bg);
+  color: var(--admin-text-secondary);
+  font-weight: 600;
+}
+
+.admin-table .MuiTableCell-body {
+  color: var(--admin-text-primary);
+  border-bottom: 1px solid var(--admin-divider-color);
+}
+
+.admin-table .MuiTableRow-root:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dark-mode .admin-table .MuiTableRow-root:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* CSS cho các thẻ chip màu sắc */
+.color-chip {
+  display: inline-block;
+  width: 64px;
+  padding: 6px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.color-chip.pink {
+  background-color: #ec407a;
+}
+
+.color-chip.purple {
+  background-color: #7e57c2;
+}
+
+.color-chip.yellow {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.color-chip.blue {
+  background-color: #2196f3;
+}
+
+/* Nút thêm lan mới */
+.add-orchid-btn {
+  background-color: var(--admin-button-color) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.add-orchid-btn:hover {
+  background-color: var(--admin-button-hover) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Thêm style cho input */
+.admin-main-content .MuiOutlinedInput-root {
+  background-color: var(--admin-paper-bg);
+  border-radius: 8px;
+}
+
+.dark-mode .admin-main-content .MuiOutlinedInput-input {
+  color: var(--admin-text-primary);
+}
+
+.dark-mode .admin-main-content .MuiInputLabel-root {
+  color: var(--admin-text-secondary);
+}
+
+/* Thêm style cho input trong trang quản lý */
+.admin-search-input {
+  background-color: var(--admin-paper-bg);
+  border-radius: 8px;
+  border: 1px solid var(--admin-border-color);
+  padding: 8px 16px;
+  color: var(--admin-text-primary);
+  width: 100%;
+  font-size: 16px;
+}
+
+.admin-search-input::placeholder {
+  color: var(--admin-text-secondary);
 }

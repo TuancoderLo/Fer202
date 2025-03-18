@@ -21,13 +21,12 @@ import {
   Grid,
   InputAdornment,
   Chip,
-  Container,
-  Rating,
-  Tooltip,
   Alert,
   Snackbar,
   CircularProgress,
   Pagination,
+  Rating,
+  Tooltip,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -41,10 +40,13 @@ import {
   Refresh as RefreshIcon,
 } from "@mui/icons-material";
 import axios from "axios";
+import useTheme from "../../hooks/useTheme";
+import "./OrchidManagement.css";
 
 const API_URL = "https://678b95c11a6b89b27a2acf18.mockapi.io/Orchid";
 
 const OrchidManagement = () => {
+  const { isDarkMode } = useTheme();
   const [orchidsList, setOrchidsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -267,64 +269,38 @@ const OrchidManagement = () => {
   );
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{ fontWeight: "bold", mb: 1 }}
-        >
-          Quản lý lan
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Thêm, sửa, xóa các loài lan trong bộ sưu tập
-        </Typography>
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
-        <Box
-          sx={{ display: "flex", alignItems: "center", gap: 2, width: "60%" }}
-        >
-          <TextField
-            placeholder="Tìm kiếm theo tên, xuất xứ, màu sắc, danh mục..."
-            variant="outlined"
-            size="small"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ flexGrow: 1 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Tooltip title="Làm mới dữ liệu">
-            <IconButton
-              onClick={handleRefresh}
-              color="primary"
-              disabled={refreshing}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
+    <div
+      className={`orchid-management-container ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
+    >
+      <div className="orchid-management-header">
+        <h1 className="orchid-management-title">Quản lý lan</h1>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
+          className="add-orchid-btn"
           onClick={() => handleOpenDialog()}
         >
-          Thêm lan mới
+          THÊM LAN MỚI
         </Button>
-      </Box>
+      </div>
+
+      <div className="search-container">
+        <div className="search-input-container">
+          <SearchIcon className="search-icon" />
+          <input
+            type="text"
+            placeholder="Tìm kiếm theo tên, xuất xứ, màu sắc, danh mục..."
+            className="admin-search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <Button variant="outlined" onClick={handleRefresh}>
+          <RefreshIcon />
+        </Button>
+      </div>
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
@@ -336,7 +312,7 @@ const OrchidManagement = () => {
             component={Paper}
             sx={{ borderRadius: 2, overflow: "hidden", mb: 3 }}
           >
-            <Table>
+            <Table className="orchid-management-table">
               <TableHead>
                 <TableRow>
                   <TableCell>Hình ảnh</TableCell>
@@ -360,13 +336,7 @@ const OrchidManagement = () => {
                           component="img"
                           src={orchid.image}
                           alt={orchid.name}
-                          sx={{
-                            width: 60,
-                            height: 60,
-                            borderRadius: 1,
-                            objectFit: "cover",
-                            border: "1px solid #eee",
-                          }}
+                          className="orchid-thumbnail"
                           onError={(e) => {
                             e.target.src =
                               "https://via.placeholder.com/60x60?text=No+Image";
@@ -379,25 +349,7 @@ const OrchidManagement = () => {
                         <Chip
                           label={orchid.color}
                           size="small"
-                          sx={{
-                            bgcolor:
-                              orchid.color.toLowerCase() === "trắng" ||
-                              orchid.color.toLowerCase() === "white"
-                                ? "#f5f5f5"
-                                : orchid.color.toLowerCase() === "đỏ" ||
-                                  orchid.color.toLowerCase() === "red"
-                                ? "#ffebee"
-                                : orchid.color.toLowerCase() === "vàng" ||
-                                  orchid.color.toLowerCase() === "yellow"
-                                ? "#fffde7"
-                                : orchid.color.toLowerCase() === "tím" ||
-                                  orchid.color.toLowerCase() === "purple"
-                                ? "#f3e5f5"
-                                : orchid.color.toLowerCase() === "hồng" ||
-                                  orchid.color.toLowerCase() === "pink"
-                                ? "#fce4ec"
-                                : "#e0f7fa",
-                          }}
+                          className={`color-chip ${orchid.color.toLowerCase()}`}
                         />
                       </TableCell>
                       <TableCell>{orchid.category}</TableCell>
@@ -440,7 +392,7 @@ const OrchidManagement = () => {
                         <Tooltip title="Sửa">
                           <IconButton
                             onClick={() => handleOpenDialog(orchid)}
-                            color="primary"
+                            className="edit-button"
                           >
                             <EditIcon />
                           </IconButton>
@@ -448,7 +400,7 @@ const OrchidManagement = () => {
                         <Tooltip title="Xóa">
                           <IconButton
                             onClick={() => handleDeleteOrchid(orchid.id)}
-                            color="error"
+                            className="delete-button"
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -642,7 +594,7 @@ const OrchidManagement = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </div>
   );
 };
 

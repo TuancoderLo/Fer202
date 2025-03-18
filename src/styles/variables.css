@@ -1,0 +1,56 @@
+:root {
+  /* Biến CSS chung cho toàn ứng dụng */
+  --transition-time: 0.3s;
+  --border-radius-1: 8px;
+  --border-radius-2: 12px;
+}
+
+.light-mode {
+  --admin-bg: #f6f9fc;
+  --admin-text-primary: #333;
+  --admin-text-secondary: #637381;
+  --admin-card-bg: #ffffff;
+  --admin-border-color: rgba(0, 0, 0, 0.1);
+  --admin-paper-bg: #ffffff;
+  --admin-divider-color: #f0f0f0;
+  --admin-icon-bg-opacity: 0.1;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --admin-button-color: #1976d2;
+  --admin-button-hover: #1565c0;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.1);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.1);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.1);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.1);
+  --admin-sidebar-bg: #ffffff;
+  --admin-sidebar-text: #333;
+  --admin-sidebar-active: #f1f5f9;
+  --admin-sidebar-icon: #637381;
+  --admin-sidebar-active-icon: #1976d2;
+  --admin-sidebar-hover: #f8fafc;
+}
+
+.dark-mode {
+  --admin-bg: #111827;
+  --admin-text-primary: #f5f5f5;
+  --admin-text-secondary: #b0b0b0;
+  --admin-card-bg: #1f2937;
+  --admin-border-color: rgba(255, 255, 255, 0.1);
+  --admin-paper-bg: #1f2937;
+  --admin-divider-color: #333;
+  --admin-icon-bg-opacity: 0.2;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --admin-button-color: #90caf9;
+  --admin-button-hover: #42a5f5;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.2);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.2);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.2);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.2);
+  --admin-sidebar-bg: #1f2937;
+  --admin-sidebar-text: #f5f5f5;
+  --admin-sidebar-active: #2d3748;
+  --admin-sidebar-icon: #b0b0b0;
+  --admin-sidebar-active-icon: #90caf9;
+  --admin-sidebar-hover: #2d3748;
+}

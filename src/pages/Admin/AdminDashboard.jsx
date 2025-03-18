@@ -18,6 +18,8 @@ import {
   ListItemText,
   ListItemAvatar,
   Divider,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
@@ -26,15 +28,20 @@ import StarIcon from "@mui/icons-material/Star";
 import NatureIcon from "@mui/icons-material/Nature";
 import AddIcon from "@mui/icons-material/Add";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SideBar from "../../components/sidebar/SideBar";
 import OrchidManagement from "./OrchidManagement";
+import useTheme from "../../hooks/useTheme";
 import axios from "axios";
+import "../../styles/variables.css";
 import "./AdminDashboard.css";
 
 const API_URL = "https://678b95c11a6b89b27a2acf18.mockapi.io/Orchid";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { isDarkMode, toggleTheme } = useTheme();
   const userName = localStorage.getItem("userName") || "Admin";
   const [activeSection, setActiveSection] = useState("dashboard");
   const [orchidsData, setOrchidsData] = useState([]);
@@ -45,19 +52,28 @@ const AdminDashboard = () => {
       value: 0,
       icon: <LocalFloristIcon />,
       color: "#1976d2",
+      bgColor: "var(--admin-stat-card-1)",
     },
-    { title: "Loài đặc biệt", value: 0, icon: <StarIcon />, color: "#ff9800" },
+    {
+      title: "Loài đặc biệt",
+      value: 0,
+      icon: <StarIcon />,
+      color: "#ff9800",
+      bgColor: "var(--admin-stat-card-2)",
+    },
     {
       title: "Loài tự nhiên",
       value: 0,
       icon: <NatureIcon />,
       color: "#4caf50",
+      bgColor: "var(--admin-stat-card-3)",
     },
     {
       title: "Tổng lượt thích",
       value: 0,
       icon: <ThumbUpIcon />,
       color: "#e91e63",
+      bgColor: "var(--admin-stat-card-4)",
     },
   ]);
 
@@ -93,24 +109,28 @@ const AdminDashboard = () => {
             value: totalOrchids,
             icon: <LocalFloristIcon />,
             color: "#1976d2",
+            bgColor: "var(--admin-stat-card-1)",
           },
           {
             title: "Loài đặc biệt",
             value: specialOrchids,
             icon: <StarIcon />,
             color: "#ff9800",
+            bgColor: "var(--admin-stat-card-2)",
           },
           {
             title: "Loài tự nhiên",
             value: naturalOrchids,
             icon: <NatureIcon />,
             color: "#4caf50",
+            bgColor: "var(--admin-stat-card-3)",
           },
           {
             title: "Tổng lượt thích",
             value: totalLikes,
             icon: <ThumbUpIcon />,
             color: "#e91e63",
+            bgColor: "var(--admin-stat-card-4)",
           },
         ]);
       } catch (error) {
@@ -150,10 +170,42 @@ const AdminDashboard = () => {
     .slice(0, 4);
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box
+      sx={{ display: "flex", minHeight: "100vh" }}
+      className={isDarkMode ? "dark-mode" : "light-mode"}
+    >
       <SideBar onLogout={handleLogout} />
 
       <Box component="main" className="admin-main-content">
+        <Box
+          className="theme-switch-container"
+          sx={{
+            mb: 3,
+          }}
+        >
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isDarkMode}
+                onChange={toggleTheme}
+                color="primary"
+              />
+            }
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {isDarkMode ? (
+                  <DarkModeIcon sx={{ mr: 1 }} />
+                ) : (
+                  <LightModeIcon sx={{ mr: 1 }} />
+                )}
+                <Typography variant="body2">
+                  {isDarkMode ? "Chế độ tối" : "Chế độ sáng"}
+                </Typography>
+              </Box>
+            }
+          />
+        </Box>
+
         <Routes>
           <Route
             path="/"
@@ -175,6 +227,7 @@ const AdminDashboard = () => {
                   topRatedOrchids={topRatedOrchids}
                   mostLikedOrchids={mostLikedOrchids}
                   totalOrchids={orchidsData.length}
+                  isDarkMode={isDarkMode}
                 />
               )
             }
@@ -200,6 +253,7 @@ const AdminDashboard = () => {
                   topRatedOrchids={topRatedOrchids}
                   mostLikedOrchids={mostLikedOrchids}
                   totalOrchids={orchidsData.length}
+                  isDarkMode={isDarkMode}
                 />
               )
             }
@@ -216,6 +270,7 @@ const DashboardContent = ({
   topRatedOrchids,
   mostLikedOrchids,
   totalOrchids,
+  isDarkMode,
 }) => {
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
@@ -259,10 +314,11 @@ const DashboardContent = ({
                     p: 1.5,
                     borderRadius: 2,
                     display: "flex",
-                    bgcolor: `${stat.color}20`,
+                    bgcolor: stat.bgColor,
                     color: stat.color,
                     mr: 2,
                   }}
+                  className="stat-icon-container"
                 >
                   {stat.icon}
                 </Box>

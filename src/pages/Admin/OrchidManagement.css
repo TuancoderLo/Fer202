@@ -1,0 +1,180 @@
+/* Import biến CSS từ file riêng */
+@import "../../styles/variables.css";
+
+/* Thêm vào đầu file */
+.light-mode {
+  --admin-bg: #f6f9fc;
+  --admin-text-primary: #333;
+  --admin-text-secondary: #637381;
+  --admin-card-bg: #ffffff;
+  --admin-border-color: rgba(0, 0, 0, 0.1);
+  --admin-paper-bg: #ffffff;
+  --admin-divider-color: #f0f0f0;
+  --admin-icon-bg-opacity: 0.1;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --admin-button-color: #1976d2;
+  --admin-button-hover: #1565c0;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.1);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.1);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.1);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.1);
+}
+
+.dark-mode {
+  --admin-bg: #111827;
+  --admin-text-primary: #f5f5f5;
+  --admin-text-secondary: #b0b0b0;
+  --admin-card-bg: #1f2937;
+  --admin-border-color: rgba(255, 255, 255, 0.1);
+  --admin-paper-bg: #1f2937;
+  --admin-divider-color: #333;
+  --admin-icon-bg-opacity: 0.2;
+  --admin-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --admin-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --admin-button-color: #90caf9;
+  --admin-button-hover: #42a5f5;
+  --admin-stat-card-1: rgba(25, 118, 210, 0.2);
+  --admin-stat-card-2: rgba(255, 152, 0, 0.2);
+  --admin-stat-card-3: rgba(76, 175, 80, 0.2);
+  --admin-stat-card-4: rgba(233, 30, 99, 0.2);
+}
+
+/* Thiết lập cách hiển thị bảng */
+.orchid-management-container {
+  padding: 20px;
+  background-color: var(--admin-bg);
+  color: var(--admin-text-primary);
+  min-height: 100vh;
+}
+
+.orchid-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.orchid-management-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--admin-text-primary);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.search-input-container {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--admin-text-secondary);
+}
+
+.admin-search-input {
+  padding-left: 40px;
+  background-color: var(--admin-paper-bg);
+  border-radius: 8px;
+  border: 1px solid var(--admin-border-color);
+  padding: 8px 16px 8px 40px;
+  color: var(--admin-text-primary);
+  width: 100%;
+  font-size: 16px;
+}
+
+.admin-search-input::placeholder {
+  color: var(--admin-text-secondary);
+}
+
+/* Bảng quản lý lan */
+.orchid-management-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--admin-card-bg);
+  box-shadow: var(--admin-card-shadow);
+}
+
+.orchid-management-table th {
+  padding: 16px;
+  text-align: left;
+  background-color: var(--admin-paper-bg);
+  color: var(--admin-text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--admin-divider-color);
+}
+
+.orchid-management-table td {
+  padding: 16px;
+  text-align: left;
+  color: var(--admin-text-primary);
+  border-bottom: 1px solid var(--admin-divider-color);
+}
+
+.orchid-management-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Ảnh thu nhỏ */
+.orchid-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Nút chức năng */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-button {
+  color: var(--admin-button-color) !important;
+}
+
+.delete-button {
+  color: #f44336 !important;
+}
+
+/* Fix cho chip màu */
+.color-chip {
+  display: inline-block;
+  width: 64px;
+  padding: 6px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.color-chip.pink {
+  background-color: #ec407a;
+}
+
+.color-chip.purple {
+  background-color: #7e57c2;
+}
+
+.color-chip.yellow {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.color-chip.blue {
+  background-color: #2196f3;
+}

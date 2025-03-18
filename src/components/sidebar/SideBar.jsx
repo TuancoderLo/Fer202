@@ -20,12 +20,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import CategoryIcon from "@mui/icons-material/Category";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PublicIcon from "@mui/icons-material/Public";
+import useTheme from "../../hooks/useTheme";
 import "./SideBar.css";
 
 const SideBar = ({ open, onClose, onLogout }) => {
   const location = useLocation();
   const userName = localStorage.getItem("userName") || "Admin";
   const userRole = localStorage.getItem("userRole");
+  const { isDarkMode } = useTheme();
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -44,7 +46,7 @@ const SideBar = ({ open, onClose, onLogout }) => {
   return (
     <Drawer
       variant="permanent"
-      className="admin-sidebar"
+      className={`admin-sidebar ${isDarkMode ? "dark-mode" : "light-mode"}`}
       classes={{
         paper: "admin-sidebar-paper",
       }}

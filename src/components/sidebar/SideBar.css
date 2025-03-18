@@ -1,13 +1,21 @@
+/* Import biến CSS từ file riêng */
+@import "../../styles/variables.css";
+
 .admin-sidebar {
   width: 280px;
   flex-shrink: 0;
+  transition: background-color var(--transition-time),
+    color var(--transition-time);
 }
 
 .admin-sidebar-paper {
   width: 280px;
   box-sizing: border-box;
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
-  background-color: #ffffff;
+  border-right: 1px solid var(--admin-border-color) !important;
+  background-color: var(--admin-sidebar-bg) !important;
+  color: var(--admin-sidebar-text) !important;
+  transition: background-color var(--transition-time),
+    color var(--transition-time), border-color var(--transition-time);
 }
 
 .admin-sidebar-header {
@@ -17,12 +25,28 @@
   justify-content: space-between;
 }
 
+.admin-sidebar-header .MuiTypography-root {
+  color: var(--admin-text-primary) !important;
+}
+
+.admin-sidebar-header .MuiTypography-caption {
+  color: var(--admin-text-secondary) !important;
+}
+
 .admin-user-info {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.admin-user-info .MuiTypography-root {
+  color: var(--admin-text-primary) !important;
+}
+
+.admin-user-info .MuiTypography-caption {
+  color: var(--admin-text-secondary) !important;
 }
 
 .admin-menu {
@@ -34,25 +58,33 @@
   margin: 4px 10px;
   border-radius: 8px;
   position: relative;
+  transition: background-color var(--transition-time);
 }
 
 .admin-menu .MuiListItem-root:hover {
-  background-color: rgba(25, 118, 210, 0.08);
+  background-color: var(--admin-sidebar-hover) !important;
 }
 
 .admin-menu .MuiListItemIcon-root {
   min-width: 40px;
-  color: #637381;
+  color: var(--admin-sidebar-icon) !important;
+}
+
+.admin-menu .MuiListItemText-primary {
+  color: var(--admin-sidebar-text) !important;
 }
 
 .active-menu-item {
-  background-color: rgba(25, 118, 210, 0.08) !important;
+  background-color: var(--admin-sidebar-active) !important;
 }
 
-.active-menu-item .MuiListItemIcon-root,
+.active-menu-item .MuiListItemIcon-root {
+  color: var(--admin-sidebar-active-icon) !important;
+}
+
 .active-menu-item .MuiListItemText-primary {
-  color: #1976d2 !important;
-  font-weight: 600;
+  color: var(--admin-sidebar-active-icon) !important;
+  font-weight: 600 !important;
 }
 
 .active-indicator {
@@ -61,9 +93,26 @@
   top: 8px;
   bottom: 8px;
   width: 4px;
-  background-color: #1976d2;
+  background-color: var(--admin-sidebar-active-icon);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+/* Nút đăng xuất */
+.admin-sidebar .MuiButton-outlinedError {
+  border-color: #f44336 !important;
+  color: #f44336 !important;
+}
+
+.dark-mode .admin-sidebar .MuiButton-outlinedError {
+  border-color: #f44336 !important;
+  color: #f44336 !important;
+}
+
+/* Đảm bảo avatar trong sidebar hiển thị đúng */
+.admin-sidebar .MuiAvatar-root {
+  background-color: var(--admin-sidebar-active-icon);
+  color: white;
 }
 
 /* Dark mode support */
