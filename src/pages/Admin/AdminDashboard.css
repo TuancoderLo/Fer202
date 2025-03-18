@@ -62,6 +62,8 @@
   color: var(--admin-text-primary);
   min-height: 100vh;
   margin-left: 280px;
+  width: calc(100% - 280px);
+  box-sizing: border-box;
   transition: margin-left var(--transition-time),
     background-color var(--transition-time), color var(--transition-time);
 }
@@ -172,6 +174,7 @@
 @media (max-width: 1200px) {
   .admin-main-content {
     margin-left: 0;
+    width: 100%;
     padding: 20px;
   }
 }
@@ -507,4 +510,11 @@
 
 .admin-search-input::placeholder {
   color: var(--admin-text-secondary);
+}
+
+/* Thêm style cho container chính */
+.admin-dashboard-container {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
 }

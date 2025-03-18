@@ -171,8 +171,10 @@ const AdminDashboard = () => {
 
   return (
     <Box
-      sx={{ display: "flex", minHeight: "100vh" }}
-      className={isDarkMode ? "dark-mode" : "light-mode"}
+      className={`admin-dashboard-container ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
+      sx={{ display: "flex", minHeight: "100vh", overflow: "hidden" }}
     >
       <SideBar onLogout={handleLogout} />
 
