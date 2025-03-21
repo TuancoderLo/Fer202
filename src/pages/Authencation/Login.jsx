@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { authenticateUser } from "../../data/dataUser";
 import "./Login.css";
+import { auth, googleProvider } from "../../config/firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -149,26 +151,33 @@ const Login = () => {
     }
   };
 
-  // Xử lý đăng nhập bằng Google
-  const handleGoogleLogin = () => {
+  // Thay thế hàm handleGoogleLogin với chức năng thực tế của Firebase
+  const handleGoogleLogin = async () => {
     setLoading(true);
+    setError("");
 
-    // Giả lập đăng nhập bằng Google (trong thực tế sẽ sử dụng Google OAuth API)
-    setTimeout(() => {
-      // Giả định đăng nhập thành công
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      // Lưu thông tin người dùng vào localStorage
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userName", "Người dùng Google");
-      localStorage.setItem("userRole", "user");
-      localStorage.setItem("userId", "google-user-123");
+      localStorage.setItem("userName", user.displayName || "Người dùng Google");
+      localStorage.setItem("userRole", "user"); // Mặc định là user, có thể điều chỉnh dựa vào yêu cầu của bạn
+      localStorage.setItem("userId", user.uid);
+      localStorage.setItem("userEmail", user.email);
 
       // Thông báo thay đổi trạng thái đăng nhập
       window.dispatchEvent(new Event("login-status-change"));
 
       // Chuyển hướng về trang chủ
       navigate("/");
-
+    } catch (error) {
+      console.error("Lỗi đăng nhập Google:", error);
+      setError("Đăng nhập Google thất bại. Vui lòng thử lại sau.");
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   // Hàm để bật/tắt hiển thị mật khẩu
